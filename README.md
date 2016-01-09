@@ -3,7 +3,7 @@
 This is project was forked from diydrones/ardupilot repo.
 
 Making this one for specifics functions and hardwares addons for UAV, Rovers and Robotics Systems.
-All changes by made drone.bo team developers will be under LICENSE(GPLv3) and pulled to diydrones/ardupilot repo.
+All changes made by drone.bo team developers will be under LICENSE(GPLv3) and pulled to diydrones/ardupilot repo.
 
 CODENAME: URUS (Universal Robotics Unmanned System)
 
