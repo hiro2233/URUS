@@ -13,10 +13,11 @@ Andreas Antonopoulos wuz'ere
 Robert Lefebvre, unconfuzzled his clone.
 Olivier check test
 Phil Rowse was here :)
-Nils Högberg (Vizual54) testing
+Nils HÃ¶gberg (Vizual54) testing
 Linus Penzlien 
 Hazy
 Benoit GRUSON
 Dario Lindo Andres
 George Zogopoulos Papaliakos, struggling with Git
 Hiroshi Takey
+Prueba
