@@ -6,9 +6,8 @@ before_install:
   - sudo apt-get -y update
   - sudo apt-get install -y tar
   - sudo apt-get install -y gawk
-  - sudo apt-get install -y arduino
-#  - sudo wget http://arduino.cc/download.php?f=/arduino-1.6.6-linux32.tar.xz
-#  - sudo tar -xvf download.php?f=%2Farduino-1.6.6-linux32.tar.xz
+  - sudo wget http://arduino.cc/download.php?f=/arduino-1.6.6-linux32.tar.xz
+  - sudo tar -xvf download.php?f=%2Farduino-1.6.6-linux32.tar.xz
   - sudo apt-get install gcc-4.8 -y
   - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 50
   - sudo apt-get install -y g++-4.8
@@ -18,7 +17,8 @@ before_install:
   - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
   - sudo apt-get install gcc-avr avrdude avr-libc binutils-avr
 script: 
-#  - export PATH=/home/travis/arduino-1.6.6/hardware/tools/avr/bin/
+  - export ARDUINO=/home/travis/arduino-1.6.6/
+  - export PATH=/home/travis/arduino-1.6.6/hardware/tools/avr/bin/
   - avr-g++ -v
   - avr-gcc -v
   - cd AntennaTracker && make apm2
