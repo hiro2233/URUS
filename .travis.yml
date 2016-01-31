@@ -1,7 +1,7 @@
 language: cpp
 
 before_install:
-  - sudo add-apt install arduino
+  - sudo apt-get install arduino
 
 script: 
   - cd AntennaTracker && make apm2
