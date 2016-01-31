@@ -6,7 +6,7 @@ before_install:
   - ./Tools/scripts/install-prereqs-ubuntu.sh -y
 
 script: 
-  - cd ./ardupilot && Tools/scripts/build_all_travis.sh
+  - cd AntennaTracker && make apm2
 
 notifications:
   webhooks:
