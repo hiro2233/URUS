@@ -1,7 +1,7 @@
 language: cpp
 
 before_install:
-  - cd .. && ./ardupilot/Tools/scripts/install-prereqs-ubuntu.sh -y && . ~/.profile
+  - cd .. && ./Tools/scripts/install-prereqs-ubuntu.sh -y && . ~/.profile
 
 script: 
   - cd ./ardupilot && Tools/scripts/build_all_travis.sh
