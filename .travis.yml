@@ -1,7 +1,7 @@
 language: cpp
 
 before_install:
-
+  - sudo apt-get update -y
 
 script: 
   - cd AntennaTracker && make sitl
