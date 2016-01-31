@@ -1,8 +1,5 @@
-# https://travis-ci.org/datagraph/libsparql
-language: cpp
 compiler:
-  - clang
-  - gcc
+  - g++
 before_install:
   - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
   - sudo apt-get update -qq
