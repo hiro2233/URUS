@@ -20,3 +20,9 @@ Benoit GRUSON
 Dario Lindo Andres
 George Zogopoulos Papaliakos, struggling with Git
 Hiroshi Takey
+<<<<<<< 051e6cffdefd35852b2f41a7020b3a885383e0c4
+=======
+Prueba
+prueba2
+algo
+>>>>>>> Added name and others to GIT_Success.txt ;)
