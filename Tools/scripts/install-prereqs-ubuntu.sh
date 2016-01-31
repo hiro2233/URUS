@@ -5,14 +5,14 @@ CWD=$(pwd)
 OPT="/opt"
 
 BASE_PKGS="gawk make git arduino-core curl"
-SITL_PKGS="g++ python-pip python-matplotlib python-serial python-wxgtk2.8 python-scipy python-opencv python-numpy python-pyparsing ccache"
+SITL_PKGS="g++ ccache"
 AVR_PKGS="gcc-avr binutils-avr avr-libc"
 PYTHON_PKGS="pymavlink MAVProxy droneapi"
 PX4_PKGS="python-serial python-argparse openocd flex bison libncurses5-dev \
           autoconf texinfo build-essential libftdi-dev libtool zlib1g-dev \
           zip genromfs"
 BEBOP_PKGS="g++-arm-linux-gnueabihf"
-UBUNTU64_PKGS="libc6:i386 libgcc1:i386 gcc-4.6-base:i386 libstdc++5:i386 libstdc++6:i386"
+UBUNTU64_PKGS="libc6:i386 libgcc1:i386 gcc-4.8-base:i386 libstdc++5:i386 libstdc++6:i386"
 ASSUME_YES=false
 
 # GNU Tools for ARM Embedded Processors
