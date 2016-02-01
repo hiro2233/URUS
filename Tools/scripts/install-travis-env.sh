@@ -58,47 +58,47 @@ sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 90) || {
 }
 
 
-if [ ! -d PX4Firmware ]; then
-    git clone https://github.com/diydrones/PX4Firmware.git
-fi
+#if [ ! -d PX4Firmware ]; then
+    #git clone https://github.com/diydrones/PX4Firmware.git
+#fi
 
-if [ ! -d PX4NuttX ]; then
-    git clone https://github.com/diydrones/PX4NuttX.git
-fi
+#if [ ! -d PX4NuttX ]; then
+    #git clone https://github.com/diydrones/PX4NuttX.git
+#fi
 
-if [ ! -d uavcan ]; then
-    git clone https://github.com/diydrones/uavcan.git
-fi
+#if [ ! -d uavcan ]; then
+    #git clone https://github.com/diydrones/uavcan.git
+#fi
 
-if [ ! -d VRNuttX ]; then
-    git clone https://github.com/virtualrobotix/vrbrain_nuttx.git VRNuttX
-fi
+#if [ ! -d VRNuttX ]; then
+    #git clone https://github.com/virtualrobotix/vrbrain_nuttx.git VRNuttX
+#fi
 
-mkdir -p $OPT
+#mkdir -p $OPT
 
-cd $OPT
+#cd $OPT
 #wget $ARM_TARBALL_URL
 #tar xjf ${ARM_TARBALL}
 #rm -f ${ARM_TARBALL}
 
-cd $OPT
+#cd $OPT
 #wget $RPI_TARBALL_URL
 #tar xzf ${RPI_TARBALL}
 #rm -f ${RPI_TARBALL}
 
-exportline="export PATH=$OPT/$ARM_ROOT/bin:\$PATH";
-echo $exportline >> ~/.profile
+#exportline="export PATH=$OPT/$ARM_ROOT/bin:\$PATH";
+#echo $exportline >> ~/.profile
 
-exportline2="export PATH=$CWD/$ARDUPILOT_TOOLS:\$PATH";
-echo $exportline2 >> ~/.profile
+#exportline2="export PATH=$CWD/$ARDUPILOT_TOOLS:\$PATH";
+#echo $exportline2 >> ~/.profile
 
-exportline3="export PATH=$OPT/tools-master/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin:\$PATH";
-echo $exportline3 >> ~/.profile
+#exportline3="export PATH=$OPT/tools-master/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin:\$PATH";
+#echo $exportline3 >> ~/.profile
 
-. ~/.profile
-echo $PATH
-ls -l $OPT/$ARM_ROOT/bin
+#. ~/.profile
+#echo $PATH
+#ls -l $OPT/$ARM_ROOT/bin
 #$OPT/$ARM_ROOT/bin/arm-none-eabi-gcc --version
 
-echo "Compiler for NavIO"
+#echo "Compiler for NavIO"
 #arm-linux-gnueabihf-gcc --version
