@@ -25,8 +25,8 @@ before_install:
   - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
   - export ARDUINO=/usr/src/arduino-1.0.6
   - export PATH+=$PATH:/usr/src/arduino-1.6.6/hardware/tools/avr/bin
-#  - chmod 775 -R /usr/src/arduino-1.0.6
-#  - chmod 775 -R /usr/src/arduino-1.6.6
+  - chmod 777 -R /usr/src/arduino-1.0.6
+  - chmod 777 -R /usr/src/arduino-1.6.6
 #  - export ARDUINO=/home/travis/build/hiro2233/URUS8/arduino-1.6.6
 #  - export PATH=$PATH:/home/travis/build/hiro2233/URUS8/arduino-1.6.6/hardware/tools/avr/bin
 #  - $ARDUINO/hardware/tools/avr/bin/avr-gcc -v
