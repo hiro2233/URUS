@@ -6,15 +6,16 @@ before_install:
   - sudo apt-get -y update
   - sudo apt-get install -y tar
   - sudo apt-get install -y gawk
+  - sudo apt-get install -y realpath
   - sudo wget http://arduino.cc/download.php?f=/arduino-1.6.6-linux32.tar.xz
   - sudo tar -xvf download.php?f=%2Farduino-1.6.6-linux32.tar.xz
-  - sudo apt-get install gcc-4.8 -y
-  - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 50
-  - sudo apt-get install -y g++-4.8
-  - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 50
-  - if [ "$CXX" = "clang++" ]; then sudo apt-get install -qq libstdc++-4.8-dev; fi
-  - if [ "$CXX" = "g++" ]; then sudo apt-get install -qq g++-4.8; fi
-  - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
+  - sudo apt-get install gcc-4.9 -y
+  - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 50
+  - sudo apt-get install -y g++-4.9
+  - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.9 50
+  - if [ "$CXX" = "clang++" ]; then sudo apt-get install -qq libstdc++-4.9-dev; fi
+  - if [ "$CXX" = "g++" ]; then sudo apt-get install -qq g++-4.9; fi
+  - if [ "$CXX" = "g++" ]; then export CXX="g++-4.9" CC="gcc-4.9"; fi
 #  - export ARDUINO=~/build/hiro2233/URUS8/arduino-1.6.6
 #  - $ARDUINO/hardware/tools/avr/bin/avr-gcc -v
   - realpath .
