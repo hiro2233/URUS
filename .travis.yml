@@ -1,6 +1,6 @@
 language: cpp
 
-sudo: true
+sudo: required
 
 before_install:
   - sudo apt-get install -y python-software-properties
@@ -8,7 +8,7 @@ before_install:
   - sudo apt-get -y update
   - sudo apt-get install -y tar
   - sudo apt-get install -y gawk
-  - sudo apt-get install -y arduino-core
+#  - sudo apt-get install -y arduino-core
 #  - sudo apt-get install -y realpath
 #  - sudo apt-get remove ccache
   - wget http://arduino.cc/download.php?f=/arduino-1.6.6-linux32.tar.xz
@@ -26,6 +26,7 @@ before_install:
   - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
   - export ARDUINO=/usr/src/arduino-1.0.6
   - export PATH=$PATH:/usr/src/arduino-1.6.6/hardware/tools/avr/bin
+  -  APMDIR=$(pwd) && pushd .. && $APMDIR/Tools/scripts/install-travis-env.sh -y && . ~/.profile && popd
 #  - chmod 777 -R /usr/src/arduino-1.0.6
 #  - chmod 777 -R /usr/src/arduino-1.6.6
 #  - export ARDUINO=/home/travis/build/hiro2233/URUS8/arduino-1.6.6
