@@ -77,14 +77,14 @@ fi
 mkdir -p $OPT
 
 cd $OPT
-wget $ARM_TARBALL_URL
-tar xjf ${ARM_TARBALL}
-rm -f ${ARM_TARBALL}
+#wget $ARM_TARBALL_URL
+#tar xjf ${ARM_TARBALL}
+#rm -f ${ARM_TARBALL}
 
 cd $OPT
-wget $RPI_TARBALL_URL
-tar xzf ${RPI_TARBALL}
-rm -f ${RPI_TARBALL}
+#wget $RPI_TARBALL_URL
+#tar xzf ${RPI_TARBALL}
+#rm -f ${RPI_TARBALL}
 
 exportline="export PATH=$OPT/$ARM_ROOT/bin:\$PATH";
 echo $exportline >> ~/.profile
@@ -98,7 +98,7 @@ echo $exportline3 >> ~/.profile
 . ~/.profile
 echo $PATH
 ls -l $OPT/$ARM_ROOT/bin
-$OPT/$ARM_ROOT/bin/arm-none-eabi-gcc --version
+#$OPT/$ARM_ROOT/bin/arm-none-eabi-gcc --version
 
 echo "Compiler for NavIO"
-arm-linux-gnueabihf-gcc --version
+#arm-linux-gnueabihf-gcc --version
