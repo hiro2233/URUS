@@ -1,26 +1,28 @@
 language: cpp
 
+require: sudo
+
 before_install:
   - sudo apt-get install -y python-software-properties
   - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
   - sudo apt-get -y update
   - sudo apt-get install -y tar
   - sudo apt-get install -y gawk
-  - sudo apt-get install -y realpath
-  - sudo apt-get remove ccache
+#  - sudo apt-get install -y realpath
+#  - sudo apt-get remove ccache
   - wget http://arduino.cc/download.php?f=/arduino-1.6.6-linux32.tar.xz
   - tar -xvf download.php?f=%2Farduino-1.6.6-linux32.tar.xz
   - wget http://arduino.cc/download.php?f=/arduino-1.0.6-linux32.tgz
   - tar -xvf download.php?f=%2Farduino-1.0.6-linux32.tgz
   - sudo mv arduino-1.6.6 /usr/src/
   - sudo mv arduino-1.0.6 /usr/src/
-  - sudo apt-get install gcc-4.9 -y
-  - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 50
-  - sudo apt-get install -y g++-4.9
-  - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.9 50
-  - if [ "$CXX" = "clang++" ]; then sudo apt-get install -qq libstdc++-4.9-dev; fi
-  - if [ "$CXX" = "g++" ]; then sudo apt-get install -qq g++-4.9; fi
-  - if [ "$CXX" = "g++" ]; then export CXX="g++-4.9" CC="gcc-4.9"; fi
+  - sudo apt-get install gcc-4.8 -y
+  - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 50
+  - sudo apt-get install -y g++-4.8
+  - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 50
+  - if [ "$CXX" = "clang++" ]; then sudo apt-get install -qq libstdc++-4.8-dev; fi
+  - if [ "$CXX" = "g++" ]; then sudo apt-get install -qq g++-4.8; fi
+  - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
   - export ARDUINO=/usr/src/arduino-1.0.6
   - export PATH+=$PATH:/usr/src/arduino-1.6.6/hardware/tools/avr/bin
 #  - chmod 775 -R /usr/src/arduino-1.0.6
