@@ -1,31 +1,32 @@
 language: cpp
+sudo: required
 
 before_install:
-  - sudo apt-get install -y python-software-properties
-  - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
-  - sudo apt-get -y update
-  - sudo apt-get install -y tar
-  - sudo apt-get install -y gawk
-  - sudo apt-get install -y realpath
-  - sudo wget http://arduino.cc/download.php?f=/arduino-1.6.6-linux32.tar.xz
-  - sudo tar -xvf download.php?f=%2Farduino-1.6.6-linux32.tar.xz
-  - sudo apt-get install gcc-4.9 -y
-  - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 50
-  - sudo apt-get install -y g++-4.9
-  - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.9 50
+  - apt-get install -y python-software-properties
+  - add-apt-repository -y ppa:ubuntu-toolchain-r/test
+  - apt-get -y update
+  - apt-get install -y tar
+  - apt-get install -y gawk
+  - apt-get install -y realpath
+  - apt-get remove ccache
+  - wget http://arduino.cc/download.php?f=/arduino-1.6.6-linux32.tar.xz
+  - tar -xvf download.php?f=%2Farduino-1.6.6-linux32.tar.xz
+  - apt-get install gcc-4.9 -y
+  - update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 50
+  - apt-get install -y g++-4.9
+  - update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.9 50
   - if [ "$CXX" = "clang++" ]; then sudo apt-get install -qq libstdc++-4.9-dev; fi
   - if [ "$CXX" = "g++" ]; then sudo apt-get install -qq g++-4.9; fi
   - if [ "$CXX" = "g++" ]; then export CXX="g++-4.9" CC="gcc-4.9"; fi
   - export ARDUINO=/home/travis/build/hiro2233/URUS8/arduino-1.6.6
   - export PATH=$PATH:/home/travis/build/hiro2233/URUS8/arduino-1.6.6/hardware/tools/avr/bin
 #  - $ARDUINO/hardware/tools/avr/bin/avr-gcc -v
-  - realpath .
-  - ls
-#  - sudo export PATH+=$PATH:~/arduino-1.6.6/hardware/tools/avr/bin/
+#  - realpath .
+#  - ls
+#  - export PATH+=$PATH:~/arduino-1.6.6/hardware/tools/avr/bin/
   
 script: 
-  - realpath .
-  - cd AntennaTracker && make apm2
+  - cd AntennaTracker && make clean && make apm2
 
 notifications:
   webhooks:
