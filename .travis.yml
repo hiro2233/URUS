@@ -19,9 +19,12 @@ before_install:
 #  - sudo export PATH+=$PATH:~/arduino-1.6.6/hardware/tools/avr/bin/
   
 script: 
-  - cd ../
+  - cd ../../
   - ls
   - ls /home/travis
+  - ls /home
+  - ls /home/travis/build
+  - ls /home/travis/builds
   - cd AntennaTracker && make apm2
 
 notifications:
