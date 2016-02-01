@@ -1,5 +1,4 @@
 language: cpp
-sudo: required
 
 before_install:
   - sudo apt-get install -y python-software-properties
@@ -11,6 +10,7 @@ before_install:
   - sudo apt-get remove ccache
   - wget http://arduino.cc/download.php?f=/arduino-1.6.6-linux32.tar.xz
   - tar -xvf download.php?f=%2Farduino-1.6.6-linux32.tar.xz
+  - sudo mkdir /usr/src
   - sudo mv arduino-1.6.6 /usr/src/
   - sudo apt-get install gcc-4.9 -y
   - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 50
