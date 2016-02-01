@@ -16,15 +16,10 @@ before_install:
   - if [ "$CXX" = "g++" ]; then sudo apt-get install -qq g++-4.8; fi
   - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
   - export ARDUINO=~/arduino-1.6.6/
+  - $ARDUINO/hardware/tools/avr/bin/avr-gcc -v
 #  - sudo export PATH+=$PATH:~/arduino-1.6.6/hardware/tools/avr/bin/
   
 script: 
-  - cd ../../
-  - ls
-  - ls /home/travis
-  - ls /home
-  - ls /home/travis/build
-  - ls /home/travis/builds
   - cd AntennaTracker && make apm2
 
 notifications:
