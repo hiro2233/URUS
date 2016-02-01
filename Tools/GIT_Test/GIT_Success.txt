@@ -21,6 +21,6 @@ Dario Lindo Andres
 George Zogopoulos Papaliakos, struggling with Git
 Hiroshi Takey
 prueba test
-prueba test 2
+
 prueba test 3
 prueba test 4
