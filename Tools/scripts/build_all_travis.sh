@@ -12,7 +12,7 @@ set -x
 
 # If TRAVIS_BUILD_TARGET is not set, default to all of them
 if [ -z "$TRAVIS_BUILD_TARGET" ]; then
-    TRAVIS_BUILD_TARGET="sitl linux apm2 navio px4-v2"
+    TRAVIS_BUILD_TARGET="sitl linux apm2 navio"
 fi
 
 declare -A build_platforms
