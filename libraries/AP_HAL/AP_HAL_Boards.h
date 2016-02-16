@@ -10,6 +10,8 @@
  * work with the Arduino mk and IDE builds without too much modification.
  */
 
+//#define APM2_ARDUINO_ENVIRONMENTS //Uncomments to enable APM2 compiling from Arduino 1.6.6 IDE, comment if you want compiling generic AVR BOARD from Cygwin, Linux and Arduino 1.6.6 Environments.
+
 #define HAL_BOARD_APM1     1
 #define HAL_BOARD_APM2     2
 #define HAL_BOARD_SITL 3
@@ -128,15 +130,31 @@
 #define CONFIG_HAL_BOARD_SUBTYPE HAL_BOARD_SUBTYPE_AVR_APM1
 #endif
 
-#elif CONFIG_HAL_BOARD == HAL_BOARD_APM2
+#elif CONFIG_HAL_BOARD == HAL_BOARD_APM2 || defined(__AVR_ATmega2560__) 
+#ifndef CONFIG_HAL_BOARD
+#define CONFIG_HAL_BOARD HAL_BOARD_APM2
+#endif
 #define AP_HAL_BOARD_DRIVER AP_HAL_AVR_APM2
 #define HAL_BOARD_NAME "APM 2"
 #define HAL_CPU_CLASS HAL_CPU_CLASS_16
 #define HAL_STORAGE_SIZE            4096
 #define HAL_STORAGE_SIZE_AVAILABLE  HAL_STORAGE_SIZE
+#if defined(AVR_MEGA) || (defined(__AVR_ATmega2560__) && defined(APM2_ARDUINO_ENVIRONMENTS))
+#define MEGA_I2C_IMU60XX_BY_PASS
+#define MEGA_GENERIC_PINS
+#define NO_IMU600XX_DRDY
+#define HAL_INS_DEFAULT HAL_INS_MPU60XX_I2C
+#define HAL_INS_MPU60XX_I2C_BUS 0
+#define HAL_INS_MPU60XX_I2C_ADDR 0x68
+#else
 #define HAL_INS_DEFAULT HAL_INS_MPU60XX_SPI
+#endif
 #ifdef APM2_BETA_HARDWARE
 #define HAL_BARO_DEFAULT HAL_BARO_BMP085
+#elif defined(AVR_MEGA) || (defined(__AVR_ATmega2560__) && defined(APM2_ARDUINO_ENVIRONMENTS))
+#define HAL_BARO_DEFAULT HAL_BARO_MS5611
+#define HAL_BARO_MS5611_I2C_BUS 0
+#define HAL_BARO_MS5611_I2C_ADDR 0x77
 #else
 #define HAL_BARO_DEFAULT HAL_BARO_MS5611_SPI
 #endif

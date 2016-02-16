@@ -33,15 +33,25 @@ const AP_Scheduler::Task Tracker::scheduler_tasks[] PROGMEM = {
     { SCHED_TASK(update_ahrs),            1,   1000 },
     { SCHED_TASK(read_radio),             1,    200 },
     { SCHED_TASK(update_tracking),        1,   1000 },
+#ifdef MEGA_GENERIC_PINS
+    { SCHED_TASK(update_GPS),             1,   1000 },
+    { SCHED_TASK(update_compass),         3,   1500 },
+    { SCHED_TASK(update_barometer),       3,   1500 },
+#else
     { SCHED_TASK(update_GPS),             5,   4000 },
     { SCHED_TASK(update_compass),         5,   1500 },
     { SCHED_TASK(update_barometer),       5,   1500 },
+#endif
     { SCHED_TASK(gcs_update),             1,   1700 },
     { SCHED_TASK(gcs_data_stream_send),   1,   3000 },
     { SCHED_TASK(compass_accumulate),     1,   1500 },
     { SCHED_TASK(barometer_accumulate),   1,    900 },
     { SCHED_TASK(update_notify),          1,    100 },
+#ifdef MEGA_GENERIC_PINS
+    { SCHED_TASK(check_usb_mux),         50,    300 },
+#else
     { SCHED_TASK(check_usb_mux),          5,    300 },
+#endif
     { SCHED_TASK(gcs_retry_deferred),     1,   1000 },
     { SCHED_TASK(one_second_loop),       50,   3900 }
 };
@@ -51,6 +61,12 @@ const AP_Scheduler::Task Tracker::scheduler_tasks[] PROGMEM = {
  */
 void Tracker::setup() 
 {
+
+#ifdef MEGA_GENERIC_PINS
+    hal.gpio->pinMode(USB_MUXPIN, HAL_GPIO_INPUT);
+    hal.gpio->write(USB_MUXPIN ,HIGH);
+#endif
+
     // load the default values of variables listed in var_info[]
     AP_Param::setup_sketch_defaults();
 
