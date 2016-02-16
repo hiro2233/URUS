@@ -30,7 +30,7 @@ build_platforms=(  ["ArduPlane"]="apm2 atmega navio bebop sitl linux"
                    ["Tools/Replay"]="linux")
 
 build_concurrency=(["apm2"]="-j2"
-                   ["apm2"]="-j2"
+                   ["atmega"]="-j2"
                    ["navio"]="-j2"
                    ["bebop"]="-j2"
                    ["sitl"]="-j2"
