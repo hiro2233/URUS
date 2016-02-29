@@ -87,7 +87,7 @@ const AP_Param::GroupInfo AP_InertialSensor::var_info[] PROGMEM = {
     // @Units: Hz
     // @Values: 0:Default,5:5Hz,10:10Hz,20:20Hz,42:42Hz,98:98Hz
     // @User: Advanced
-    AP_GROUPINFO("MPU6K_FILTER", 4, AP_InertialSensor, _mpu6000_filter,  0),
+    AP_GROUPINFO("MPU6K_FILTER", 4, AP_InertialSensor, _mpu6000_filter,  20),
 
 #if INS_MAX_INSTANCES > 1
     // @Param: ACC2SCAL_X
@@ -216,6 +216,8 @@ const AP_Param::GroupInfo AP_InertialSensor::var_info[] PROGMEM = {
     AP_GROUPEND
 };
 
+
+
 AP_InertialSensor::AP_InertialSensor() :
     _gyro_count(0),
     _accel_count(0),
@@ -235,6 +237,9 @@ AP_InertialSensor::AP_InertialSensor() :
         _gyro_error_count[i] = 0;
     }
 }
+
+
+
 
 
 /*
@@ -353,7 +358,7 @@ AP_InertialSensor::_detect_backends(void)
 #if 0 // disabled due to broken hardware on some PXF capes
 #if CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_PXF
     // the PXF also has a MPU6000
-    _add_backend(AP_InertialSensor_MPU6000::detect);
+    _add_backend(AP_InertialSensor_MPU9150::detect);
 #endif
 #endif
 

@@ -80,6 +80,7 @@ static int16_t read_sonar(void)
 static void init_compass()
 {
     if (!compass.init() || !compass.read()) {
+        
         // make sure we don't pass a broken compass to DCM
         cliSerial->println_P(PSTR("COMPASS INIT ERROR"));
         Log_Write_Error(ERROR_SUBSYSTEM_COMPASS,ERROR_CODE_FAILED_TO_INITIALISE);

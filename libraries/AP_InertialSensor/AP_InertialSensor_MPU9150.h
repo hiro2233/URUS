@@ -4,7 +4,7 @@
 #define __AP_INERTIAL_SENSOR_MPU9150_H__
 
 #include <AP_HAL.h>
-#if CONFIG_HAL_BOARD == HAL_BOARD_LINUX
+#if CONFIG_HAL_BOARD == HAL_BOARD_LINUX || CONFIG_HAL_BOARD == HAL_BOARD_APM2
 
 #include <AP_Progmem.h>
 #include "AP_InertialSensor.h"
@@ -26,7 +26,25 @@ public:
     // detect the sensor
     static AP_InertialSensor_Backend *detect(AP_InertialSensor &imu);
 
+protected:
+
+    float                       _delta_time;
+
 private:
+
+    enum Start_style {
+        COLD_START = 0,
+        WARM_START
+    };
+
+    // the rate that updates will be available to the application
+    enum Sample_rate {
+        RATE_50HZ,
+        RATE_100HZ,
+        RATE_200HZ,
+        RATE_400HZ
+    };
+
     bool            _init_sensor();
     void             _accumulate(void);
     Vector3f        _accel_filtered;
@@ -51,6 +69,24 @@ private:
 
     void _set_filter_frequency(uint8_t filter_hz);
 
+
+
+    uint8_t              mpu_addr = 0x68; 
+    AP_HAL::Semaphore *i2c_sem;
+    bool hardware_init(AP_InertialSensor::Sample_rate sample_rate);
+	uint16_t             _micros_per_sample;
+    uint16_t					          _num_samples;
+    float                       _temp;
+    float                       _temp_to_celsius( uint16_t );
+    static const float          _gyro_scale;
+    // ensure we can't initialise twice
+    bool                        _initialised;
+    int16_t              _mpu6000_product_id;
+    void _set_filter_register(uint8_t filter_hz, uint8_t default_filter);
+    void                 _poll_data(void);
+	
+	
+
     // Low Pass filters for gyro and accel 
     LowPassFilter2p _accel_filter_x;
     LowPassFilter2p _accel_filter_y;
@@ -61,6 +97,8 @@ private:
 
     uint8_t _gyro_instance;
     uint8_t _accel_instance;
+
+
 };
 #endif
 #endif // __AP_INERTIAL_SENSOR_MPU9150_H__

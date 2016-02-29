@@ -53,6 +53,7 @@
 #define HAL_INS_VRBRAIN  7
 #define HAL_INS_MPU9250  8
 #define HAL_INS_L3GD20   9
+#define HAL_INS_MPU9150  10
 
 // barometer driver types
 #define HAL_BARO_BMP085     1
@@ -96,6 +97,8 @@
   board. This prevents us having a mess of ifdefs in every example
   sketch
  */
+ 
+//#define CONFIG_HAL_BOARD HAL_BOARD_APM2
 
 #if CONFIG_HAL_BOARD == HAL_BOARD_APM1
 #define AP_HAL_BOARD_DRIVER AP_HAL_AVR_APM1
@@ -120,7 +123,7 @@
 #ifdef APM2_BETA_HARDWARE
 #define HAL_BARO_DEFAULT HAL_BARO_BMP085
 #else
-#define HAL_BARO_DEFAULT HAL_BARO_MS5611_SPI
+#define HAL_BARO_DEFAULT HAL_BARO_MS5611
 #endif
 #define HAL_COMPASS_DEFAULT HAL_COMPASS_HMC5843
 #ifndef CONFIG_HAL_BOARD_SUBTYPE

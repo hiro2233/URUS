@@ -20,7 +20,7 @@ static uint8_t mavlink_compassmot(mavlink_channel_t chan)
     uint32_t last_send_time;
     bool     updated = false;           // have we updated the compensation vector at least once
     uint8_t  command_ack_start = command_ack_counter;
-
+    
     // exit immediately if we are already in compassmot
     if (ap.compass_mot) {
         // ignore restart messages
@@ -28,14 +28,14 @@ static uint8_t mavlink_compassmot(mavlink_channel_t chan)
     }else{
         ap.compass_mot = true;
     }
-
+    
     // check compass is enabled
     if (!g.compass_enabled) {
         gcs[chan-MAVLINK_COMM_0].send_text_P(SEVERITY_HIGH, PSTR("compass disabled\n"));
         ap.compass_mot = false;
         return 1;
     }
-
+   
     // check compass health
     compass.read();
     for (uint8_t i=0; i<compass.get_count(); i++) {
@@ -45,7 +45,7 @@ static uint8_t mavlink_compassmot(mavlink_channel_t chan)
             return 1;
         }
     }
-
+    
     // check if radio is calibrated
     pre_arm_rc_checks();
     if (!ap.pre_arm_rc_check) {
@@ -53,7 +53,7 @@ static uint8_t mavlink_compassmot(mavlink_channel_t chan)
         ap.compass_mot = false;
         return 1;
     }
-
+    
     // check throttle is at zero
     read_radio();
     if (g.rc_3.control_in != 0) {
@@ -61,7 +61,7 @@ static uint8_t mavlink_compassmot(mavlink_channel_t chan)
         ap.compass_mot = false;
         return 1;
     }
-
+    
     // check we are landed
     if (!ap.land_complete) {
         gcs[chan-MAVLINK_COMM_0].send_text_P(SEVERITY_HIGH, PSTR("Not landed"));
@@ -71,20 +71,21 @@ static uint8_t mavlink_compassmot(mavlink_channel_t chan)
 
     // disable cpu failsafe
     failsafe_disable();
-
+    
     // initialise compass
-    init_compass();
-
+    
+    //init_compass();
+    //hal.gpio->write(30, 1);//aqui
     // default compensation type to use current if possible
     if (battery.monitoring() == AP_BATT_MONITOR_VOLTAGE_AND_CURRENT) {
         comp_type = AP_COMPASS_MOT_COMP_CURRENT;
     }else{
         comp_type = AP_COMPASS_MOT_COMP_THROTTLE;
     }
-
+    
     // send back initial ACK
     mavlink_msg_command_ack_send(chan, MAV_CMD_PREFLIGHT_CALIBRATION,0);
-
+    
     // flash leds
     AP_Notify::flags.esc_calibration = true;
 

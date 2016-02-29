@@ -10,6 +10,7 @@
 static int8_t   setup_factory           (uint8_t argc, const Menu::arg *argv);
 static int8_t   setup_show              (uint8_t argc, const Menu::arg *argv);
 static int8_t   setup_set               (uint8_t argc, const Menu::arg *argv);
+static int8_t   setup_set               (uint8_t argc, const Menu::arg *argv);
 #ifdef WITH_ESC_CALIB
 static int8_t   esc_calib               (uint8_t argc, const Menu::arg *argv);
 #endif

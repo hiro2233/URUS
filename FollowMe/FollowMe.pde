@@ -9,6 +9,7 @@
 #include <AP_Math.h>
 #include <GCS_MAVLink.h>
 #include <GCS_Console.h>
+#include <AP_Vehicle.h>
 
 #include <AP_GPS.h>
 
@@ -23,23 +24,23 @@
 /* Does the hal console tunnel over mavlink? Requires patched MAVProxy. */
 #define CONFIG_FOLLOWME_MAVCONSOLE 0
 
-const AP_HAL::HAL& hal = AP_HAL_AVR_APM2;
+const AP_HAL::HAL& hal = AP_HAL_BOARD_DRIVER;
 
 mavlink_channel_t upstream_channel = MAVLINK_COMM_1;
 mavlink_channel_t downstream_channel = MAVLINK_COMM_0;
 
-GPS* gps;
-AP_GPS_Auto auto_gps(&gps);
+AP_GPS gps;
+AP_GPS auto_gps(gps);
 FMStateMachine sm;
 UserInput input;
 
-static void sm_on_button_activate(int event) {
+void sm_on_button_activate(int event) {
   if (event == DigitalDebounce::BUTTON_DOWN) {
     sm.on_button_activate();
   }
 }
 
-static void sm_on_button_cancel(int event) {
+void sm_on_button_cancel(int event) {
   if (event == DigitalDebounce::BUTTON_DOWN) {
     sm.on_button_cancel();
   }
@@ -78,12 +79,12 @@ void setup(void) {
     input.joy_btn_event_callback(sm_on_button_cancel);
 
     hal.console->println_P(PSTR("GPS start init"));
-    auto_gps.init(hal.uartB, GPS::GPS_ENGINE_PEDESTRIAN, &DataFlash);
+    auto_gps.init(NULL);
 }
 
 void loop(void) {
-    if (gps != NULL) {
-        gps->update();
+    if (gps.status() != NULL) {
+        gps.update();
     } else {
         auto_gps.update();
     }

@@ -831,10 +831,11 @@
   build a firmware version string.
   GIT_VERSION comes from Makefile builds
 */
+
 #ifndef GIT_VERSION
-#define FIRMWARE_STRING THISFIRMWARE
+#define FIRMWARE_STRING THISFIRMWARE " (36b405fb)"
 #else
-#define FIRMWARE_STRING THISFIRMWARE " (" GIT_VERSION ")"
+#define FIRMWARE_STRING THISFIRMWARE " (36b405fb)"
 #endif
 
 #endif // __ARDUCOPTER_CONFIG_H__

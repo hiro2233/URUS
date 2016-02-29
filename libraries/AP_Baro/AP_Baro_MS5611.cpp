@@ -68,7 +68,7 @@ uint32_t AP_Baro_MS5611::_timer;
 bool volatile AP_Baro_MS5611::_updated;
 
 AP_Baro_MS5611_Serial* AP_Baro_MS5611::_serial = NULL;
-AP_Baro_MS5611_SPI AP_Baro_MS5611::spi;
+//AP_Baro_MS5611_SPI AP_Baro_MS5611::spi;
 #if MS5611_WITH_I2C
 AP_Baro_MS5611_I2C AP_Baro_MS5611::i2c;
 #endif
@@ -161,7 +161,7 @@ void AP_Baro_MS5611_SPI::sem_give()
 #if CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_NAVIO
 #define MS5611_ADDR 0x77
 #else
-#define MS5611_ADDR 0x76 /** I2C address of the MS5611 on the PX4 board. */
+#define MS5611_ADDR 0x77 /** I2C address of the MS5611 on the PX4 board. */
 #endif
 
 void AP_Baro_MS5611_I2C::init()

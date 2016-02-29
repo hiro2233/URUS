@@ -37,8 +37,8 @@ static ISRRegistry isrRegistry;
 HAL_AVR_APM2::HAL_AVR_APM2() :
     AP_HAL::HAL(
         &avrUart0Driver, /* phys UART0 -> uartA */
-        &avrUart1Driver, /* phys UART1 -> uartB */
-        &avrUart2Driver, /* phys UART2 -> uartC */
+        &avrUart2Driver, /* phys UART1 -> uartB */
+        &avrUart1Driver, /* phys UART2 -> uartC */
         NULL,            /* no uartD */
         NULL,            /* no uartE */
         &avrI2CDriver,

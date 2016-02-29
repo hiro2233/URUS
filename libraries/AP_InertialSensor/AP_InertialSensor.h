@@ -288,6 +288,8 @@ private:
 
     uint32_t _accel_error_count[INS_MAX_INSTANCES];
     uint32_t _gyro_error_count[INS_MAX_INSTANCES];
+	
+
 };
 
 #include "AP_InertialSensor_Backend.h"

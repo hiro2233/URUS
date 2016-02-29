@@ -268,8 +268,8 @@ static AP_Baro_VRBRAIN barometer;
 static AP_Baro_HIL barometer;
 #elif CONFIG_BARO == HAL_BARO_MS5611
 static AP_Baro_MS5611 barometer(&AP_Baro_MS5611::i2c);
-#elif CONFIG_BARO == HAL_BARO_MS5611_SPI
-static AP_Baro_MS5611 barometer(&AP_Baro_MS5611::spi);
+//#elif CONFIG_BARO == HAL_BARO_MS5611_SPI
+//static AP_Baro_MS5611 barometer(&AP_Baro_MS5611::spi);
 #else
  #error Unrecognized CONFIG_BARO setting
 #endif
@@ -827,6 +827,7 @@ static const AP_Scheduler::Task scheduler_tasks[] PROGMEM = {
 #endif
 };
 #else
+
 /*
   scheduler table - all regular tasks apart from the fast_loop()
   should be listed here, along with how often they should be called
@@ -896,6 +897,8 @@ static const AP_Scheduler::Task scheduler_tasks[] PROGMEM = {
 
 void setup() 
 {
+    //hal.gpio->pinMode(30, HAL_GPIO_OUTPUT);
+    //hal.gpio->write(30, 0);
     cliSerial = hal.console;
 
     // Load the default values of variables listed in var_info[]s
@@ -1145,6 +1148,8 @@ static void three_hz_loop()
 // one_hz_loop - runs at 1Hz
 static void one_hz_loop()
 {
+
+    //hal.gpio->toggle(31);
     if (should_log(MASK_LOG_ANY)) {
         Log_Write_Data(DATA_AP_STATE, ap.value);
     }

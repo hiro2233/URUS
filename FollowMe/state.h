@@ -31,7 +31,7 @@ public:
   void on_upstream_command_long(mavlink_command_long_t *pkt);
   void on_upstream_set_mode(mavlink_set_mode_t* pkt);
 
-  void on_loop(GPS* gps);
+  void on_loop(AP_GPS gps);
 
   void on_button_activate();
   void on_button_cancel();
@@ -48,7 +48,7 @@ private:
 
   /* _update_local_gps: Get device's current GPS status and location. Called
    * periodically. Can activate _on_fault_cancel(); */
-  void _update_local_gps(GPS* gps);
+  void _update_local_gps(AP_GPS* gps);
 
   void _on_user_override();
   void _on_fault_cancel();

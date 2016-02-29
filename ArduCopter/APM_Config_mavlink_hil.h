@@ -4,7 +4,7 @@
 //
 // Mavlink supports
 // 1. HIL_MODE_SENSORS: full sensor simulation
-#define HIL_MODE            HIL_MODE_SENSORS
+//#define HIL_MODE            HIL_MODE_SENSORS
 
 // HIL_PORT SELCTION
 //
@@ -26,8 +26,8 @@
 //
 // The buad rate is controlled by SERIAL1_BAUD in this mode.
 
-#define HIL_PORT            3
+//#define HIL_PORT            3
 
 // Sensors
 // All sensors are supported in all modes.
-#define MAGNETOMETER        ENABLED
+//#define MAGNETOMETER        ENABLED

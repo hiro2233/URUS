@@ -23,10 +23,10 @@
 #include <AP_Param.h>
 
 #if CONFIG_HAL_BOARD == HAL_BOARD_APM2
- #define EXTERNAL_LED_ARMED   61    // Armed LED - AN7
- #define EXTERNAL_LED_GPS     60    // GPS LED - AN6
+ #define EXTERNAL_LED_ARMED   35    // Armed LED - AN7
+ #define EXTERNAL_LED_GPS     34    // GPS LED - AN6
  #define EXTERNAL_LED_MOTOR1  58    // Motor1 LED - AN4
- #define EXTERNAL_LED_MOTOR2  62    // Motor2 LED - AN8
+ #define EXTERNAL_LED_MOTOR2  59    // Motor2 LED - AN8
 #elif CONFIG_HAL_BOARD == HAL_BOARD_APM1
  #define EXTERNAL_LED_GPS     64    // GPS LED - AN10
  #define EXTERNAL_LED_ARMED   65    // Armed LED - AN11

@@ -9,7 +9,7 @@
 #if CONFIG_HAL_BOARD != HAL_BOARD_APM2 && CONFIG_HAL_BOARD != HAL_BOARD_APM1
 #define MS5611_WITH_I2C 1
 #else
-#define MS5611_WITH_I2C 0
+#define MS5611_WITH_I2C 1
 #endif
 
 
@@ -58,6 +58,7 @@ private:
 
 #if MS5611_WITH_I2C
 /** I2C serial device. */
+
 class AP_Baro_MS5611_I2C : public AP_Baro_MS5611_Serial
 {
 public:

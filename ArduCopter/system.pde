@@ -73,15 +73,16 @@ static void run_cli(AP_HAL::UARTDriver *port)
 
 static void init_ardupilot()
 {
+    
     if (!hal.gpio->usb_connected()) {
         // USB is not connected, this means UART0 may be a Xbee, with
         // its darned bricking problem. We can't write to it for at
         // least one second after powering up. Simplest solution for
         // now is to delay for 1 second. Something more elegant may be
         // added later
-        delay(1000);
+        //delay(1000);
     }
-
+    
     // Console serial port
     //
     // The console port buffers are defined to be sufficiently large to support
@@ -97,6 +98,7 @@ static void init_ardupilot()
 
     // GPS serial port.
     //
+//#define GPS_PROTOCOL GPS_PROTOCOL_AUTO
 #if GPS_PROTOCOL != GPS_PROTOCOL_IMU
     // standard gps running. Note that we need a 256 byte buffer for some
     // GPS types (eg. UBLOX)
@@ -160,7 +162,7 @@ static void init_ardupilot()
 
     // we start by assuming USB connected, as we initialed the serial
     // port with SERIAL0_BAUD. check_usb_mux() fixes this if need be.
-    ap.usb_connected = true;
+    ap.usb_connected = false;
     check_usb_mux();
 
 #if CONFIG_HAL_BOARD != HAL_BOARD_APM2
@@ -217,8 +219,8 @@ static void init_ardupilot()
     // Do GPS init
     gps.init(&DataFlash);
 
-    if(g.compass_enabled)
-        init_compass();
+    //if(g.compass_enabled)
+        //init_compass();
 
     // initialise attitude and position controllers
     attitude_control.set_dt(MAIN_LOOP_SECONDS);
@@ -279,7 +281,9 @@ static void init_ardupilot()
 #endif
 
     startup_ground(true);
-
+    if(g.compass_enabled)
+        init_compass();    
+        
 #if LOGGING_ENABLED == ENABLED
     Log_Write_Startup();
 #endif

@@ -11,6 +11,8 @@ static int8_t   test_compass(uint8_t argc,              const Menu::arg *argv);
 static int8_t   test_ins(uint8_t argc,                  const Menu::arg *argv);
 static int8_t   test_optflow(uint8_t argc,              const Menu::arg *argv);
 static int8_t   test_relay(uint8_t argc,                const Menu::arg *argv);
+//static int8_t   test_compassmot(uint8_t argc,           const Menu::arg *argv);
+
 #if CONFIG_HAL_BOARD == HAL_BOARD_PX4 || CONFIG_HAL_BOARD == HAL_BOARD_VRBRAIN
 static int8_t   test_shell(uint8_t argc,                const Menu::arg *argv);
 #endif
@@ -30,6 +32,7 @@ const struct Menu::command test_menu_commands[] PROGMEM = {
     {"ins",                 test_ins},
     {"optflow",             test_optflow},
     {"relay",               test_relay},
+//    {"mot",                 test_compassmot},
 #if CONFIG_HAL_BOARD == HAL_BOARD_PX4 || CONFIG_HAL_BOARD == HAL_BOARD_VRBRAIN
     {"shell", 				test_shell},
 #endif
@@ -75,6 +78,7 @@ test_baro(uint8_t argc, const Menu::arg *argv)
     return 0;
 }
 #endif
+
 
 static int8_t
 test_compass(uint8_t argc, const Menu::arg *argv)

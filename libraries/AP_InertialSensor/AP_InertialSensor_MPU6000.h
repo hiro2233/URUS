@@ -24,6 +24,11 @@
 #include <LowPassFilter2p.h>
 #endif
 
+#define MPU6000_SAMPLE_SIZE 12
+#define MPU6000_MAX_FIFO_SAMPLES 3
+#define MAX_DATA_READ (MPU6000_MAX_FIFO_SAMPLES * MPU6000_SAMPLE_SIZE)
+
+
 class AP_InertialSensor_MPU6000 : public AP_InertialSensor_Backend
 {
 public:
@@ -34,9 +39,12 @@ public:
 
     bool gyro_sample_available(void) { return _sum_count >= _sample_count; }
     bool accel_sample_available(void) { return _sum_count >= _sample_count; }
-
     // detect the sensor
     static AP_InertialSensor_Backend *detect(AP_InertialSensor &imu);
+    void init(bool &fifo_mode, uint8_t &max_samples);
+    void read8(uint8_t reg, uint8_t *val);
+	void write8(uint8_t reg, uint8_t val);
+
 
 private:
 #if MPU6000_DEBUG
@@ -47,21 +55,36 @@ private:
     uint8_t _gyro_instance;
     uint8_t _accel_instance;
 
-    AP_HAL::DigitalSource *_drdy_pin;
+
 
     bool                 _init_sensor(void);
     bool                 _sample_available();
     void                 _read_data_transaction();
+    void    _accumulate(uint8_t *samples, uint8_t n_samples);
     bool                 _data_ready();
     void                 _poll_data(void);
     uint8_t              _register_read( uint8_t reg );
     void                 _register_write( uint8_t reg, uint8_t val );
     void                 _register_write_check(uint8_t reg, uint8_t val);
     bool                 _hardware_init(void);
+					
 
-    AP_HAL::SPIDeviceDriver *_spi;
+
+    void read_burst(uint8_t* samples,
+                    AP_HAL::DigitalSource *_drdy_pin,
+                    uint8_t &n_samples);
+					
+    AP_HAL::I2CDriver *_spi;
     AP_HAL::Semaphore *_spi_sem;
+	//AP_HAL::SPIDeviceDriver *_spie;
+	
+	uint8_t _addr;
+    uint8_t _rx[MAX_DATA_READ];
+    AP_HAL::DigitalSource *_drdy_pin;
+	uint8_t *_samples;
 
+
+	
     static const float          _gyro_scale;
 
     // support for updating filter at runtime
@@ -93,6 +116,11 @@ private:
     Vector3l _gyro_sum;
 #endif
     volatile uint16_t _sum_count;
+    bool _fifo_mode;
+
+    AP_Int8     _accel_filter_cutoff;
+    AP_Int8     _gyro_filter_cutoff;		
+	
 };
 
 #endif // __AP_INERTIAL_SENSOR_MPU6000_H__
