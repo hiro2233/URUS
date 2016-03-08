@@ -99,6 +99,12 @@ const AP_Param::GroupInfo AP_BoardConfig::var_info[] = {
 
 #if CONFIG_HAL_BOARD == HAL_BOARD_PX4 && !defined(CONFIG_ARCH_BOARD_PX4FMU_V1)
 extern "C" int uavcan_main(int argc, const char *argv[]);
+
+#define _UAVCAN_IOCBASE             (0x4000)                        // IOCTL base for module UAVCAN
+#define _UAVCAN_IOC(_n)             (_IOC(_UAVCAN_IOCBASE, _n))
+
+#define UAVCAN_IOCG_NODEID_INPROGRESS  _UAVCAN_IOC(1)               // query if node identification is in progress
+
 #endif
 
 void AP_BoardConfig::init()
@@ -142,7 +148,7 @@ void AP_BoardConfig::init()
     }
 
 #if !defined(CONFIG_ARCH_BOARD_PX4FMU_V1)
-    if (_can_enable == 1) {
+    if (_can_enable >= 1) {
         const char *args[] = { "uavcan", "start", NULL };
         int ret = uavcan_main(3, args);
         if (ret != 0) {
@@ -150,9 +156,28 @@ void AP_BoardConfig::init()
         } else {
             hal.console->printf("UAVCAN: started\n");            
             // give some time for CAN bus initialisation
-            hal.scheduler->delay(500);
+            hal.scheduler->delay(1500);
         }
     }
+    if (_can_enable >= 2) {
+        const char *args[] = { "uavcan", "start", "fw", NULL };
+        int ret = uavcan_main(4, args);
+        if (ret != 0) {
+            hal.console->printf("UAVCAN: failed to start servers\n");
+        } else {
+            fd = open("/dev/uavcan/esc", 0); // design flaw of uavcan driver, this should be /dev/uavcan/node one day
+            if (fd == -1) {
+                AP_HAL::panic("Configuration invalid - unable to open /dev/uavcan/esc");
+            }
+
+            // delay startup, UAVCAN still discovering nodes
+            while (ioctl(fd, UAVCAN_IOCG_NODEID_INPROGRESS,0) == OK) {
+                hal.scheduler->delay(500);
+            }
+            hal.console->printf("UAVCAN: node discovery complete\n");
+            close(fd);
+        }
+   }
 #endif
     
 #elif CONFIG_HAL_BOARD == HAL_BOARD_VRBRAIN
