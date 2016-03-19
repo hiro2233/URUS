@@ -1,7 +1,5 @@
 // -*- tab-width: 4; Mode: C++; c-basic-offset: 4; indent-tabs-mode: nil -*-
-
-#ifndef _DEFINES_H
-#define _DEFINES_H
+#pragma once
 
 // Internal defines, don't edit and expect things to work
 // -------------------------------------------------------
@@ -66,7 +64,8 @@ enum FlightMode {
     INITIALISING  = 16,
     QSTABILIZE    = 17,
     QHOVER        = 18,
-    QLOITER       = 19
+    QLOITER       = 19,
+    QLAND         = 20
 };
 
 // type of stick mixing enabled
@@ -206,5 +205,3 @@ enum {
     USE_REVERSE_THRUST_FBWB                     = (1<<9),
     USE_REVERSE_THRUST_GUIDED                   = (1<<10),
 };
-
-#endif // _DEFINES_H

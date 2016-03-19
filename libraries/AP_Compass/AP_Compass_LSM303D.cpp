@@ -292,7 +292,7 @@ AP_Compass_LSM303D::init()
 
     hal.scheduler->suspend_timer_procs();
 
-    _spi = hal.spi->device(AP_HAL::SPIDevice_LSM303D);
+    _spi = hal.spi->device(AP_HAL::SPIDevice_LSM9DS0_AM);
     _spi_sem = _spi->get_semaphore();
 
     _drdy_pin_m = hal.gpio->channel(LSM303D_DRDY_M_PIN);
@@ -317,9 +317,6 @@ AP_Compass_LSM303D::init()
             if (_data_ready()) {
                 _spi_sem->give();
                 break;
-            } else {
-                hal.console->println(
-                                       "LSM303D startup failed: no data ready");
             }
             _spi_sem->give();
         }

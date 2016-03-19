@@ -449,7 +449,7 @@ void Compass::_detect_backends(void)
     _add_backend(AP_Compass_HMC5843::detect_i2c(*this, hal.i2c));
 #elif HAL_COMPASS_DEFAULT == HAL_COMPASS_HMC5843_MPU6000
     _add_backend(AP_Compass_HMC5843::detect_mpu6000(*this));
-#elif  HAL_COMPASS_DEFAULT == HAL_COMPASS_AK8963_I2C && HAL_INS_AK8963_I2C_BUS == 1
+#elif  HAL_COMPASS_DEFAULT == HAL_COMPASS_AK8963_I2C && HAL_COMPASS_AK8963_I2C_BUS == 1
     _add_backend(AP_Compass_AK8963::detect_i2c(*this, hal.i2c1,
                                                HAL_COMPASS_AK8963_I2C_ADDR));
 #elif HAL_COMPASS_DEFAULT == HAL_COMPASS_AK8963_MPU9250_I2C
@@ -623,12 +623,12 @@ Compass::get_declination() const
   calculate a compass heading given the attitude from DCM and the mag vector
  */
 float
-Compass::calculate_heading(const Matrix3f &dcm_matrix) const
+Compass::calculate_heading(const Matrix3f &dcm_matrix, uint8_t i) const
 {
     float cos_pitch_sq = 1.0f-(dcm_matrix.c.x*dcm_matrix.c.x);
 
     // Tilt compensated magnetic field Y component:
-    const Vector3f &field = get_field();
+    const Vector3f &field = get_field(i);
 
     float headY = field.y * dcm_matrix.c.z - field.z * dcm_matrix.c.y;
 
