@@ -430,6 +430,8 @@ AP_InertialSensor::_detect_backends(void)
     _add_backend(AP_InertialSensor_MPU6000::detect_spi(*this));
 #elif HAL_INS_DEFAULT == HAL_INS_MPU60XX_I2C && HAL_INS_MPU60XX_I2C_BUS == 2
     _add_backend(AP_InertialSensor_MPU6000::detect_i2c(*this, hal.i2c2, HAL_INS_MPU60XX_I2C_ADDR));
+#elif HAL_INS_DEFAULT == HAL_INS_MPU60XX_I2C && HAL_INS_MPU60XX_I2C_BUS == 0
+    _add_backend(AP_InertialSensor_MPU6000::detect_i2c(*this, hal.i2c, HAL_INS_MPU60XX_I2C_ADDR));
 #elif HAL_INS_DEFAULT == HAL_INS_PX4 || HAL_INS_DEFAULT == HAL_INS_VRBRAIN
     _add_backend(AP_InertialSensor_PX4::detect(*this));
 #elif HAL_INS_DEFAULT == HAL_INS_OILPAN
@@ -1458,6 +1460,31 @@ void AP_InertialSensor::set_delta_angle(uint8_t instance, const Vector3f &deltaa
     if (instance < INS_MAX_INSTANCES) {
         _delta_angle_valid[instance] = true;
         _delta_angle[instance] = deltaa;
+    }
+}
+
+bool AP_InertialSensor::get_new_trim(float& trim_roll, float &trim_pitch)
+{
+    if (_new_trim) {
+        trim_roll = _trim_roll;
+        trim_pitch = _trim_pitch;
+        _new_trim = false;
+        return true;
+    }
+    return false;
+}
+
+// update accel calibrator
+void AP_InertialSensor::acal_update()
+{
+    if(_acal == NULL) {
+        return;
+    }
+
+    _acal->update();
+
+    if (hal.util->get_soft_armed() && _acal->get_status() != ACCEL_CAL_NOT_STARTED) {
+        _acal->cancel();
     }
 }
 
