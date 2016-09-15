@@ -15,10 +15,49 @@ static void mavlink_delay_cb_static()
 {
     tracker.mavlink_delay_cb();
 }
+#define MPUREG_PWR_MGMT_1                           0x6B
+#       define BIT_PWR_MGMT_1_DEVICE_RESET          0x80 // reset entire device
+#       define BIT_PWR_MGMT_1_CLK_ZGYRO             0x03 // PLL with Z axis gyroscope reference
+void habilitarcompass() {
+    AP_HAL::Semaphore    *_bus_sem;
+    _bus_sem = hal.i2c->get_semaphore();
+
+    if (!_bus_sem->take(1000)) {
+        hal.scheduler->panic(PSTR("MPU6000: Unable to get semaphore"));
+    }
+
+    uint8_t tries;
+    for (tries = 0; tries<5; tries++) {
+        hal.i2c->writeRegister(0x68, MPUREG_PWR_MGMT_1, BIT_PWR_MGMT_1_DEVICE_RESET);
+        hal.scheduler->delay(100);
+
+        // Wake up device and select GyroZ clock. Note that the
+        // MPU6000 starts up in sleep mode, and it can take some time
+        // for it to come out of sleep
+        hal.i2c->writeRegister(0x68, MPUREG_PWR_MGMT_1, BIT_PWR_MGMT_1_CLK_ZGYRO);
+        hal.scheduler->delay(5);
+
+        // check it has woken up
+        uint8_t dat[2];
+        
+        hal.i2c->readRegister(0x68, MPUREG_PWR_MGMT_1, dat);
+        if (dat[0] == BIT_PWR_MGMT_1_CLK_ZGYRO)
+            break;
+
+    }
+    
+ 
+    hal.i2c->writeRegister(0x68, 0x6A, 0x00);
+    hal.scheduler->delay(5);
+    hal.i2c->writeRegister(0x68, 0x37, 0x02);
+    hal.scheduler->delay(5);
+
+    _bus_sem->give();  
+}
 
 void Tracker::init_tracker()
 {
-
+    //hal.scheduler->set_timer_speed(500);
     // initialise console serial port
     serial_manager.init_console();
 
@@ -63,7 +102,7 @@ void Tracker::init_tracker()
 #if LOGGING_ENABLED == ENABLED
     log_init();
 #endif
-
+    habilitarcompass();
     if (g.compass_enabled==true) {
         if (!compass.init() || !compass.read()) {
             hal.console->printf_P(PSTR("Compass initialisation failed!\n"));
@@ -83,7 +122,7 @@ void Tracker::init_tracker()
     ins.init(AP_InertialSensor::COLD_START, ins_sample_rate);
 
     ahrs.reset();
-
+    //habilitarcompass();
     init_barometer(true);
 
     // set serial ports non-blocking

@@ -28,12 +28,12 @@
 //////////////////////////////////////////////////////////////////////////////
 // RC Channel definitions
 //
-#ifndef CH_YAW
+//#ifndef CH_YAW
  # define CH_YAW        CH_1    // RC input/output for yaw on channel 1
-#endif
-#ifndef CH_PITCH
+//#endif
+//#ifndef CH_PITCH
  # define CH_PITCH      CH_2    // RC input/output for pitch on channel 2
-#endif
+//#endif
 
 
 //////////////////////////////////////////////////////////////////////////////

@@ -34,9 +34,9 @@ const AP_Scheduler::Task Tracker::scheduler_tasks[] PROGMEM = {
     { SCHED_TASK(update_ahrs),            1,   1000 },
     { SCHED_TASK(read_radio),             1,    200 },
     { SCHED_TASK(update_tracking),        1,   1000 },
-    { SCHED_TASK(update_GPS),             5,   4000 },
-    { SCHED_TASK(update_compass),         5,   1500 },
-    { SCHED_TASK(update_barometer),       5,   1500 },
+    { SCHED_TASK(update_GPS),             4,   4000 },
+    { SCHED_TASK(update_compass),         4,   1500 },
+    { SCHED_TASK(update_barometer),       4,   1500 },
     { SCHED_TASK(gcs_update),             1,   1700 },
     { SCHED_TASK(gcs_data_stream_send),   1,   3000 },
     { SCHED_TASK(compass_accumulate),     1,   1500 },
@@ -48,7 +48,7 @@ const AP_Scheduler::Task Tracker::scheduler_tasks[] PROGMEM = {
     { SCHED_TASK(gcs_retry_deferred),     1,   1000 },
     { SCHED_TASK(one_second_loop),       50,   3900 },
     { SCHED_TASK(compass_cal_update),     1,    100 },
-    { SCHED_TASK(accel_cal_update),       5,    100 }
+    { SCHED_TASK(accel_cal_update),       4,    100 }
 };
 
 /**
@@ -63,8 +63,8 @@ void Tracker::setup()
     notify.init(false);
 
     // antenna tracker does not use pre-arm checks or battery failsafe
-    AP_Notify::flags.pre_arm_check = false;
-    AP_Notify::flags.pre_arm_gps_check = false;
+    AP_Notify::flags.pre_arm_check = true;
+    AP_Notify::flags.pre_arm_gps_check = true;
     AP_Notify::flags.failsafe_battery = false;
 
     init_tracker();
