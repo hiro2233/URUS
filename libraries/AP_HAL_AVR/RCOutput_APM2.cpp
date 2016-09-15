@@ -63,41 +63,39 @@ void APM2RCOutput::init(void* machtnichts) {
 void APM2RCOutput::set_freq(uint32_t chmask, uint16_t freq_hz) {
     uint16_t icr = _timer_period(freq_hz);
 
-    if ((chmask & ( _BV(CH_1) | _BV(CH_2))) != 0) {
-        ICR1 = icr;
-    }
+	if ((chmask & ( _BV(CH_10) | _BV(CH_11))) != 0) {
+		ICR1 = icr;
+	}
 
-    if ((chmask & ( _BV(CH_3) | _BV(CH_4) | _BV(CH_5))) != 0) {
-        ICR4 = icr;
-    }
+	if ((chmask & ( _BV(CH_1) | _BV(CH_3) | _BV(CH_4))) != 0) {
+		ICR3 = icr;
+	}
 
-    if ((chmask & ( _BV(CH_6) | _BV(CH_7) | _BV(CH_8))) != 0) {
-        ICR3 = icr;
-    }
+	if ((chmask & ( _BV(CH_2) | _BV(CH_7) | _BV(CH_8))) != 0) {
+		ICR4 = icr;
+	}
 }
 
 uint16_t APM2RCOutput::get_freq(uint8_t ch) {
     uint16_t icr;
     switch (ch) {
-        case CH_1:
-        case CH_2:
-            icr = ICR1;
-            break;
-        case CH_3:
-        case CH_4:
-        case CH_5:
-            icr = ICR4;
-            break; 
-        case CH_6:
-        case CH_7:
-        case CH_8:
-            icr = ICR3;
-            break;
-        /* CH_10 and CH_11 share TIMER5 with input capture.
-         * The period is specified in OCR5A rater than the ICR. */
         case CH_10:
         case CH_11:
-            icr = OCR5A;
+            icr = ICR1;
+            break;
+        case CH_1:
+        case CH_3:
+        case CH_4:
+            icr = ICR3;
+            break;
+        case CH_2:
+        case CH_7:
+        case CH_8:
+            icr = ICR4;
+            break;
+        case CH_5:
+        case CH_6:
+            icr = ICR5;
             break;
         default:
             return 0;
@@ -110,31 +108,31 @@ uint16_t APM2RCOutput::get_freq(uint8_t ch) {
  * or a mask of channels */
 void APM2RCOutput::enable_ch(uint8_t ch) {
     switch(ch) {
-    case 0: TCCR1A |= (1<<COM1B1); break; // CH_1 : OC1B
-    case 1: TCCR1A |= (1<<COM1A1); break; // CH_2 : OC1A
-    case 2: TCCR4A |= (1<<COM4C1); break; // CH_3 : OC4C
-    case 3: TCCR4A |= (1<<COM4B1); break; // CH_4 : OC4B
-    case 4: TCCR4A |= (1<<COM4A1); break; // CH_5 : OC4A
-    case 5: TCCR3A |= (1<<COM3C1); break; // CH_6 : OC3C
-    case 6: TCCR3A |= (1<<COM3B1); break; // CH_7 : OC3B
-    case 7: TCCR3A |= (1<<COM3A1); break; // CH_8 : OC3A
-    case 9: TCCR5A |= (1<<COM5B1); break; // CH_10 : OC5B
-    case 10: TCCR5A |= (1<<COM5C1); break; // CH_11 : OC5C
+	case 0: TCCR3A |= (1<<COM3A1); break; // CH_1
+	case 1: TCCR4A |= (1<<COM4A1); break; // CH_2
+	case 2: TCCR3A |= (1<<COM3B1); break; // CH_3
+	case 3: TCCR3A |= (1<<COM3C1); break; // CH_4
+	case 4: TCCR5A |= (1<<COM5C1); break; // CH_5
+	case 5: TCCR5A |= (1<<COM5B1); break; // CH_6
+	case 6: TCCR4A |= (1<<COM4B1); break; // CH_7
+	case 7: TCCR4A |= (1<<COM4C1); break; // CH_8
+	case 9: TCCR1A |= (1<<COM1A1); break; // CH_10
+	case 10: TCCR1A |= (1<<COM1B1); break; // CH_11
     }
 }
 
 void APM2RCOutput::disable_ch(uint8_t ch) {
     switch(ch) {
-    case 0: TCCR1A &= ~(1<<COM1B1); break; // CH_1 : OC1B
-    case 1: TCCR1A &= ~(1<<COM1A1); break; // CH_2 : OC1A
-    case 2: TCCR4A &= ~(1<<COM4C1); break; // CH_3 : OC4C
-    case 3: TCCR4A &= ~(1<<COM4B1); break; // CH_4 : OC4B
-    case 4: TCCR4A &= ~(1<<COM4A1); break; // CH_5 : OC4A
-    case 5: TCCR3A &= ~(1<<COM3C1); break; // CH_6 : OC3C
-    case 6: TCCR3A &= ~(1<<COM3B1); break; // CH_7 : OC3B
-    case 7: TCCR3A &= ~(1<<COM3A1); break; // CH_8 : OC3A
-    case 9: TCCR5A &= ~(1<<COM5B1); break; // CH_10 : OC5B
-    case 10: TCCR5A &= ~(1<<COM5C1); break; // CH_11 : OC5C
+	case 0: TCCR3A &= ~(1<<COM3A1); break; // CH_1
+	case 1: TCCR4A &= ~(1<<COM4A1); break; // CH_2
+	case 2: TCCR3A &= ~(1<<COM3B1); break; // CH_3
+	case 3: TCCR3A &= ~(1<<COM3C1); break; // CH_4
+	case 4: TCCR5A &= ~(1<<COM5C1); break; // CH_5
+	case 5: TCCR5A &= ~(1<<COM5B1); break; // CH_6
+	case 6: TCCR4A &= ~(1<<COM4B1); break; // CH_7
+	case 7: TCCR4A &= ~(1<<COM4C1); break; // CH_8
+	case 9: TCCR1A &= ~(1<<COM1A1); break; // CH_10
+	case 10: TCCR1A &= ~(1<<COM1B1); break; // CH_11
     }
 }
 
@@ -152,16 +150,16 @@ void APM2RCOutput::write(uint8_t ch, uint16_t period_us) {
     uint16_t pwm = constrain_period(period_us) << 1;
     switch(ch)
     {
-    case 0:  OCR1B=pwm; break;  // out1
-    case 1:  OCR1A=pwm; break;  // out2
-    case 2:  OCR4C=pwm; break;  // out3
-    case 3:  OCR4B=pwm; break;  // out4
-    case 4:  OCR4A=pwm; break;  // out5
-    case 5:  OCR3C=pwm; break;  // out6
-    case 6:  OCR3B=pwm; break;  // out7
-    case 7:  OCR3A=pwm; break;  // out8
-    case 9:  OCR5B=pwm; break;  // out10
-    case 10: OCR5C=pwm; break;  // out11
+	case 0:  OCR3A=pwm; break; //5
+	case 1:  OCR4A=pwm; break; //6
+	case 2:  OCR3B=pwm; break; //2
+	case 3:  OCR3C=pwm; break; //3
+	case 4:  OCR5C=pwm; break; //5
+	case 5:  OCR5B=pwm; break; //6
+	case 6:  OCR4B=pwm; break; //7
+	case 7:  OCR4C=pwm; break; //8
+	case 9:  OCR1A=pwm; break; //10
+	case 10: OCR1B=pwm; break; //11
     }
 }
 
@@ -177,20 +175,20 @@ void APM2RCOutput::write(uint8_t ch, uint16_t* period_us, uint8_t len) {
 uint16_t APM2RCOutput::read(uint8_t ch) {
     uint16_t pwm=0;
     switch(ch) {
-    case 0:  pwm=OCR1B; break;      // out1
-    case 1:  pwm=OCR1A; break;      // out2
-    case 2:  pwm=OCR4C; break;      // out3
-    case 3:  pwm=OCR4B; break;      // out4
-    case 4:  pwm=OCR4A; break;      // out5
-    case 5:  pwm=OCR3C; break;      // out6
-    case 6:  pwm=OCR3B; break;      // out7
-    case 7:  pwm=OCR3A; break;      // out8
-    case 9:  pwm=OCR5B; break;      // out10
-    case 10: pwm=OCR5C; break;      // out11
+	case 0:  pwm=OCR3A; break;  //ch1
+	case 1:  pwm=OCR4A; break;  //ch2
+	case 2:  pwm=OCR3B; break;  //ch3
+	case 3:  pwm=OCR3C; break;  //ch4
+	case 4:  pwm=OCR5C; break;  //ch5
+	case 5:  pwm=OCR5B; break;  //ch6
+	case 6:  pwm=OCR4B; break;  //ch7
+	case 7:  pwm=OCR4C; break;  //ch8
+	case 9:  pwm=OCR1A; break;  //ch10
+	case 10: pwm=OCR1B; break;  //ch11
     }
     /* scale from 0.5us resolution (timer units) to 1us units */
     return pwm>>1;
-
+	
 }
 
 void APM2RCOutput::read(uint16_t* period_us, uint8_t len) {

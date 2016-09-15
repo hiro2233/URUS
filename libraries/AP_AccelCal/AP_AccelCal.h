@@ -64,7 +64,7 @@ private:
     uint8_t _num_active_calibrators;
 
     AccelCalibrator* get_calibrator(uint8_t i);
-    //void ac_printf(const prog_char_t*, ...);
+    //void _printf(const char*, ...);
 };
 
 class AP_AccelCal_Client {

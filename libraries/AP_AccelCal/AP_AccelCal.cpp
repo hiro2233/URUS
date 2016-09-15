@@ -95,8 +95,8 @@ void AP_AccelCal::update()
                         default:
                             fail();
                             return;
-                    }*/
-                    //ac_printf(PSTR("Place vehicle %s and press any key."), msg);
+                    }
+                    _printf("Place vehicle %s and press any key.", msg);*/
                     //hal.console->printf_P(PSTR("Place vehicle %s and press any key."),msg);
                 }
                 // setup snooping of packets so we can see the COMMAND_ACK
@@ -178,7 +178,7 @@ void AP_AccelCal::start(GCS_MAVLINK *gcs)
 
 void AP_AccelCal::success()
 {
-    //ac_printf(PSTR("Calibration successful"));
+    //_printf("Calibration successful");
 
     for(uint8_t i=0 ; i < _num_clients ; i++) {
         _clients[i]->_acal_event_success();
@@ -189,7 +189,7 @@ void AP_AccelCal::success()
 
 void AP_AccelCal::cancel()
 {
-    //ac_printf(PSTR("Calibration cancelled"));
+    //_printf("Calibration cancelled");
 
     for(uint8_t i=0 ; i < _num_clients ; i++) {
         _clients[i]->_acal_event_cancellation();
@@ -200,7 +200,7 @@ void AP_AccelCal::cancel()
 
 void AP_AccelCal::fail()
 {
-    //ac_printf(PSTR("Calibration FAILED"));
+    //_printf("Calibration FAILED");
 
     for(uint8_t i=0 ; i < _num_clients ; i++) {
         _clients[i]->_acal_event_failure();
@@ -237,7 +237,7 @@ void AP_AccelCal::collect_sample()
 
     for(uint8_t i=0; i<_num_clients; i++) {
         if (client_active(i) && !_clients[i]->_acal_get_ready_to_sample()) {
-            //ac_printf(PSTR("Not ready to sample"));
+            //_printf("Not ready to sample");
             return;
         }
     }
@@ -331,32 +331,36 @@ static void _snoop(const mavlink_message_t* msg)
         _start_collect_sample = true;
     }
 }
+/*
+void AP_AccelCal::_printf(const char *fmt, ...)
+{
 
-//void AP_AccelCal::ac_printf(const prog_char_t *fmt, ...)
-//{
-
-    //if (!_gcs) {
-        //return;
-    //}
-    //char msg[50];
-    //va_list ap;
-    //va_start(ap, fmt);
-    //hal.util->vsnprintf_P(msg, sizeof(msg), fmt, ap);
-    //va_end(ap);
-    //if (msg[strlen(msg)-1] == '\n') {
-        // STATUSTEXT messages should not add linefeed
-        //msg[strlen(msg)-1] = 0;
-    //}
-    //AP_HAL::UARTDriver *uart = _gcs->get_uart();
+    if (!_gcs) {
+        return;
+    }
+    char msg[50];
+    va_list ap;
+    va_start(ap, fmt);
+    hal.util->vsnprintf(msg, sizeof(msg), fmt, ap);
+    va_end(ap);
+    if (msg[strlen(msg)-1] == '\n') {
+        //STATUSTEXT messages should not add linefeed
+        msg[strlen(msg)-1] = 0;
+    }
+    
+    AP_HAL::UARTDriver *uart = _gcs->get_uart();
+    */
     /*
      *     to ensure these messages get to the user we need to wait for the
      *     port send buffer to have enough room
      */
-    //while (uart->txspace() < MAVLINK_NUM_NON_PAYLOAD_BYTES+MAVLINK_MSG_ID_STATUSTEXT_LEN) {
-        //hal.scheduler->delay(1);
-    //}
+/*
+    while (uart->txspace() < MAVLINK_NUM_NON_PAYLOAD_BYTES+MAVLINK_MSG_ID_STATUSTEXT_LEN) {
+        hal.scheduler->delay(1);
+    }
 
-//#if !APM_BUILD_TYPE(APM_BUILD_Replay)
-    //_gcs->send_text(MAV_SEVERITY_CRITICAL, msg);
-//#endif
-//}
+#if !APM_BUILD_TYPE(APM_BUILD_Replay)
+    _gcs->send_text(SEVERITY_LOW, msg);
+#endif
+}
+*/

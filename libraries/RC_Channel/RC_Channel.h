@@ -138,43 +138,29 @@ public:
 
     static RC_Channel *rc_channel(uint8_t i);
 
-    int16_t    get_radio_in() const { return _radio_in;}
-    void       set_radio_in(int16_t val){_radio_in = val;}
+    int16_t    get_radio_in() const { return radio_in;}
+    void       set_radio_in(int16_t val){radio_in = val;}
 
-    int16_t    get_control_in() const { return _control_in;}
-    void       set_control_in(int16_t val) { _control_in = val;}
+    int16_t    get_control_in() const { return control_in;}
+    void       set_control_in(int16_t val) { control_in = val;}
 
-    int16_t    get_servo_out() const {return _servo_out;}
-    void       set_servo_out(int16_t val){_servo_out = val;}
+    int16_t    get_servo_out() const {return servo_out;}
+    void       set_servo_out(int16_t val){servo_out = val;}
 
-    int16_t    get_pwm_out() const { return _pwm_out;}
+    int16_t    get_pwm_out() const { return pwm_out;}
 
-    int16_t    get_radio_out() const { return _radio_out;}
-    void       set_radio_out(int16_t val){ _radio_out = val;}
+    int16_t    get_radio_out() const { return radio_out;}
+    void       set_radio_out(int16_t val){ radio_out = val;}
 
-    int16_t    get_radio_min() const {return _radio_min.get();}
-    void       set_radio_min(int16_t val){_radio_min = val;}
+    int16_t    get_radio_min() const {return radio_min.get();}
+    void       set_radio_min(int16_t val){radio_min = val;}
 
-    int16_t    get_radio_max() const {return _radio_max.get();}
-    void       set_radio_max(int16_t val){_radio_max = val;}
+    int16_t    get_radio_max() const {return radio_max.get();}
+    void       set_radio_max(int16_t val){radio_max = val;}
 
-    int16_t    get_radio_trim() const { return _radio_trim.get();}
+    int16_t    get_radio_trim() const { return radio_trim.get();}
 
 private:
-
-    // pwm is stored here
-    int16_t     _radio_in;
-    // value generated from PWM
-    int16_t     _control_in;
-    // current values to the servos - degrees * 100 (approx assuming servo is -45 to 45 degrees except [3] is 0 to 100
-    int16_t     _servo_out;
-    // PWM is without the offset from radio_min
-    int16_t     _pwm_out;
-    int16_t     _radio_out;
-
-    AP_Int16    _radio_min;
-    AP_Int16    _radio_trim;
-    AP_Int16    _radio_max;
 
     AP_Int8         _reverse;
     AP_Int16        _dead_zone;

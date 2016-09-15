@@ -9,7 +9,7 @@ extern const AP_HAL::HAL& hal;
 #define MPU6000_ACCEL_SCALE_1G    (GRAVITY_MSS / 4096.0f)
 
 #if CONFIG_HAL_BOARD == HAL_BOARD_APM2
-#define MPU6000_DRDY_PIN 70
+//#define MPU6000_DRDY_PIN 70
 #elif CONFIG_HAL_BOARD == HAL_BOARD_LINUX
 #if CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_ERLE || CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_PXF
 #include <AP_HAL_Linux/GPIO.h>
@@ -329,6 +329,7 @@ void AP_MPU6000_BusDriver_I2C::read_burst(uint8_t *samples,
 
         /* Too many samples, do a FIFO RESET */
         write8(MPUREG_USER_CTRL, 0);
+        write8(MPUREG_INT_PIN_CFG, 0x02);
         write8(MPUREG_USER_CTRL, BIT_USER_CTRL_FIFO_RESET | BIT_USER_CTRL_SIG_COND_RESET);
         write8(MPUREG_USER_CTRL, BIT_USER_CTRL_FIFO_EN);
         n_samples = 0;
@@ -443,8 +444,8 @@ bool AP_InertialSensor_MPU6000::_init_sensor(void)
     _bus_sem = _bus->get_semaphore();
 
 #ifdef MPU6000_DRDY_PIN
-    _drdy_pin = hal.gpio->channel(MPU6000_DRDY_PIN);
-    _drdy_pin->mode(HAL_GPIO_INPUT);
+    //_drdy_pin = hal.gpio->channel(MPU6000_DRDY_PIN);
+    //_drdy_pin->mode(HAL_GPIO_INPUT);
 #endif
 
     hal.scheduler->suspend_timer_procs();
@@ -541,12 +542,12 @@ bool AP_InertialSensor_MPU6000::update( void )
     }
 #else
     if (_last_accel_filter_hz != _accel_filter_cutoff()) {
-        if (_bus_sem->take(10)) {
-            _bus->set_bus_speed(AP_HAL::SPIDeviceDriver::SPI_SPEED_LOW);
-            _set_filter_register(_accel_filter_cutoff());
-            _bus->set_bus_speed(AP_HAL::SPIDeviceDriver::SPI_SPEED_HIGH);
+        if (_bus_sem->take(100)) {
+            //_bus->set_bus_speed(AP_HAL::SPIDeviceDriver::SPI_SPEED_LOW);
+            _set_filter_register(20);
+            //_bus->set_bus_speed(AP_HAL::SPIDeviceDriver::SPI_SPEED_HIGH);
             _bus_sem->give();
-            _last_accel_filter_hz = _accel_filter_cutoff();
+            _last_accel_filter_hz = 20;
         }
     }
 #endif
@@ -564,6 +565,7 @@ bool AP_InertialSensor_MPU6000::update( void )
  */
 bool AP_InertialSensor_MPU6000::_data_ready()
 {
+    _drdy_pin = 0;
     if (_drdy_pin) {
         return _drdy_pin->read() != 0;
     }
@@ -684,7 +686,7 @@ bool AP_InertialSensor_MPU6000::_hardware_init(void)
 {
     uint8_t max_samples;
 
-    if (!_bus_sem->take(100)) {
+    if (!_bus_sem->take(1000)) {
         hal.scheduler->panic(PSTR("MPU6000: Unable to get semaphore"));
     }
 
@@ -760,11 +762,11 @@ bool AP_InertialSensor_MPU6000::_hardware_init(void)
     // rate on the gyro
     _register_write(MPUREG_SMPLRT_DIV, 7);
 #else
-    _set_filter_register(_accel_filter_cutoff());
+    _set_filter_register(20);
 
     // set sample rate to 200Hz, and use _sample_divider to give
     // the requested rate to the application
-    _register_write(MPUREG_SMPLRT_DIV, MPUREG_SMPLRT_200HZ);
+    _register_write(MPUREG_SMPLRT_DIV, MPUREG_SMPLRT_250HZ);
 #endif
     hal.scheduler->delay(1);
 
@@ -786,19 +788,21 @@ bool AP_InertialSensor_MPU6000::_hardware_init(void)
         // Accel scale 8g (4096 LSB/g)
         _register_write(MPUREG_ACCEL_CONFIG,2<<3);
     }
-    hal.scheduler->delay(1);
+    hal.scheduler->delay(2);
 
     // configure interrupt to fire when new data arrives
     _register_write(MPUREG_INT_ENABLE, BIT_RAW_RDY_EN);
-    hal.scheduler->delay(1);
+    hal.scheduler->delay(2);
 
     // clear interrupt on any read, and hold the data ready pin high
     // until we clear the interrupt
-    _register_write(MPUREG_INT_PIN_CFG, BIT_INT_RD_CLEAR | BIT_LATCH_INT_EN);
-
+    _register_write(MPUREG_USER_CTRL, 0);
+    hal.scheduler->delay(2);
+    _register_write(MPUREG_INT_PIN_CFG, 0x02);
+    hal.scheduler->delay(2);
     // now that we have initialised, we set the SPI bus speed to high
     // (8MHz on APM2)
-    _bus->set_bus_speed(AP_HAL::SPIDeviceDriver::SPI_SPEED_HIGH);
+    //_bus->set_bus_speed(AP_HAL::SPIDeviceDriver::SPI_SPEED_HIGH);
 
     _bus_sem->give();
 
