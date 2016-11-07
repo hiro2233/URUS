@@ -47,8 +47,8 @@ for pkg in $PYTHON_PKGS; do
 done
 
 # install some extra packages (for later AVR compiler)
-rsync -av firmware.ardupilot.org::Tools/Travis/*.deb ExtraPackages
-sudo dpkg -i ExtraPackages/*.deb || echo "FAILED INSTALL OF EXTRA DEBS"
+#rsync -av firmware.ardupilot.org::Tools/Travis/*.deb ExtraPackages
+#sudo dpkg -i ExtraPackages/*.deb || echo "FAILED INSTALL OF EXTRA DEBS"
 
 # try to upgrade to g++ 4.8. See https://github.com/travis-ci/travis-ci/issues/1379
 (sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test &&
