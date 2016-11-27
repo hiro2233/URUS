@@ -13,7 +13,7 @@ using namespace AP_HAL_AVR;
 
 extern const HAL& hal;
 
-static uint8_t pinRcChannel[8] = {0, 1, 2, 3, 5, 4, 4, 6}; // ROLL,PITCH,THROTTLE,YAW,MODE,AUX2,CAMPITCH,CAMROLL
+static uint8_t pinRcChannel[8] = {0, 1, 2, 3, 5, 4, 7, 6}; // ROLL,PITCH,THROTTLE,YAW,MODE,AUX2,CAMPITCH,CAMROLL
 
 //#ifndef SERIAL_PPM
 # define SERIAL_PPM SERIAL_PPM_ENABLED
