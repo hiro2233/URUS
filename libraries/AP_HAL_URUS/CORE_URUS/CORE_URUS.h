@@ -25,17 +25,23 @@
 #include "CORE_URUS_NAMESPACE.h"
 
 #include "CoreUrusTimers.h"
+#include "CoreUrusScheduler.h"
+
+#include <stdint.h>
 
 class NSCORE_URUS::CLCORE_URUS {
 public:
 
-    CLCORE_URUS (NSCORE_URUS::CLCoreUrusTimers* _timers)
+    CLCORE_URUS(NSCORE_URUS::CLCoreUrusTimers* _timers,
+                NSCORE_URUS::CLCoreUrusScheduler* _scheduler)
     :
-    timers(_timers)
+    timers(_timers),
+    scheduler(_scheduler)
     {}
 
     virtual void init_core() const = 0;
 
     NSCORE_URUS::CLCoreUrusTimers*  timers;
+    NSCORE_URUS::CLCoreUrusScheduler*  scheduler;
 };
 
