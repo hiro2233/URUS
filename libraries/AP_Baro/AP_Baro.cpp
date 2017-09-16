@@ -36,6 +36,7 @@
 #include "AP_Baro_MS5611.h"
 #include "AP_Baro_qflight.h"
 #include "AP_Baro_QURT.h"
+#include "AP_Baro_URUS.h"
 #if HAL_WITH_UAVCAN
 #include "AP_Baro_UAVCAN.h"
 #endif
@@ -478,6 +479,9 @@ void AP_Baro::init(void)
     _num_drivers = 1;
 #elif HAL_BARO_DEFAULT == HAL_BARO_QURT
     drivers[0] = new AP_Baro_QURT(*this);
+    _num_drivers = 1;
+#elif HAL_BARO_DEFAULT == HAL_BARO_URUS
+    drivers[0] = new AP_Baro_URUS(*this);
     _num_drivers = 1;
 #endif
 
