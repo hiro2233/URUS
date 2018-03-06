@@ -237,9 +237,9 @@
 				</ExtraCommands>
 			</Target>
 			<Target title="URUSCYGWIN_Debug">
-				<Option output="build/uruscygwin/lib/Release/MasterApmLibs" prefix_auto="1" extension_auto="1" />
+				<Option output="build/uruscygwin/lib/Debug/MasterApmLibs" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="" />
-				<Option object_output="build/uruscygwin/lib/obj/Release" />
+				<Option object_output="build/uruscygwin/lib/obj/Debug" />
 				<Option type="2" />
 				<Option compiler="gcc" />
 				<Option createDefFile="1" />
