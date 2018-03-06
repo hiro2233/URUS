@@ -199,8 +199,8 @@
 				</ExtraCommands>
 			</Target>
 			<Target title="URUSCYGWIN_Debug">
-				<Option output="../../build/uruscygwin/Release/joypad_remote" prefix_auto="1" extension_auto="1" />
-				<Option object_output="../../build/uruscygwin/obj/Release/" />
+				<Option output="../../build/uruscygwin/Debug/joypad_remote" prefix_auto="1" extension_auto="1" />
+				<Option object_output="../../build/uruscygwin/obj/Debug" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Option use_console_runner="0" />
@@ -249,7 +249,7 @@
 				</Compiler>
 				<Linker>
 					<Add library="MasterApmLibs" />
-					<Add directory="../../build/uruscygwin/lib/Release" />
+					<Add directory="../../build/uruscygwin/lib/Debug" />
 				</Linker>
 				<ExtraCommands>
 					<Add after="size $(TARGET_OUTPUT_FILE)" />
