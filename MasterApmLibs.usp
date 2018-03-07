@@ -133,7 +133,6 @@
 				<Compiler>
 					<Add option="-mcall-prologues" />
 					<Add option="-Wall" />
-					<Add option="-g" />
 					<Add option='-Wl,&quot;--gc-sections, --relax&quot;' />
 					<Add option="-std=gnu++11" />
 					<Add option="-ffunction-sections" />
