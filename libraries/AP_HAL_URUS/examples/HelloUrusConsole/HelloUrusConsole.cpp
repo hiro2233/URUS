@@ -15,13 +15,13 @@ uint32_t now, last;
 void setup()
 {
     now = AP_HAL::millis();
-    hal.console->printf("\nhello URUS! time: %u\n", now);
+    hal.console->printf("\nhello URUS! time: %lu\n", now);
 }
 
 void loop()
 {
     static uint32_t count = 0;
-    hal.console->printf("counter: %u time: %u\n", count++, last);
+    hal.console->printf("counter: %lu time: %lu\n", count++, last);
     hal.scheduler->delay(1000);
     last = AP_HAL::millis() - now;
     now = AP_HAL::millis();
