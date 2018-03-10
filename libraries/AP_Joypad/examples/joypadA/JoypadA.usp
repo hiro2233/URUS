@@ -137,6 +137,7 @@
 				<Option compiler="avr-gcc" />
 				<Compiler>
 					<Add option="-mcall-prologues" />
+					<Add option="-Os" />
 					<Add option='-Wl,&quot;--gc-sections, --relax&quot;' />
 					<Add option="-std=gnu++11" />
 					<Add option="-ffunction-sections" />
@@ -178,6 +179,7 @@
 					<Add directory="../../../../libraries/AP_Common/missing" />
 				</Compiler>
 				<Linker>
+					<Add option="-s" />
 					<Add option="-mmcu=atmega16u2" />
 					<Add library="MasterLibUrus" />
 					<Add directory="../../../../build/apm2/lib/Release" />
