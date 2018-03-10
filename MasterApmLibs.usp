@@ -132,6 +132,7 @@
 				<Option createDefFile="1" />
 				<Compiler>
 					<Add option="-mcall-prologues" />
+					<Add option="-Os" />
 					<Add option="-Wall" />
 					<Add option='-Wl,&quot;--gc-sections, --relax&quot;' />
 					<Add option="-std=gnu++11" />
@@ -172,6 +173,7 @@
 					<Add directory="build/sitl/libraries/GCS_MAVLink" />
 				</Compiler>
 				<Linker>
+					<Add option="-s" />
 					<Add option="-mmcu=atmega16u2" />
 				</Linker>
 			</Target>
