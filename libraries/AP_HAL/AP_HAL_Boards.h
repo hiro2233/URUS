@@ -261,4 +261,6 @@
 #define AP_MODULE_SUPPORTED 0
 #endif
 
-
+#if HAL_CPU_CLASS >= HAL_CPU_CLASS_150
+#define PROGMEM
+#endif
