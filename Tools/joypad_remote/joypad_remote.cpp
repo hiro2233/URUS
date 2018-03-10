@@ -23,7 +23,7 @@ static LowPassFilter2pLong low_pass_filter2(800,30);
   often they should be called (in 20ms units) and the maximum time
   they are expected to take (in microseconds)
  */
-const AP_Scheduler::Task JoypadRemote::scheduler_tasks[] = {
+const AP_Scheduler::Task JoypadRemote::scheduler_tasks[] PROGMEM = {
     SCHED_TASK(update_sensor,   50,   2000),
     SCHED_TASK(live,             1,   1000),
 };
