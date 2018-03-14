@@ -10,11 +10,10 @@
 
 const AP_HAL::HAL& hal = AP_HAL::get_HAL();
 
-JoypadRemote joypadremote;
 volatile bool JoypadRemote::_sending = false;
+JoypadRemote joypadremote;
 
-static LowPassFilter2pLong low_pass_filter(800,30);
-static LowPassFilter2pLong low_pass_filter2(800,30);
+static LowPassFilter2pLong *low_pass_filter[SENSORS_COUNT];
 
 #define SCHED_TASK(func, _interval_ticks, _max_time_micros) SCHED_TASK_CLASS(JoypadRemote, &joypadremote, func, _interval_ticks, _max_time_micros)
 
@@ -23,7 +22,7 @@ static LowPassFilter2pLong low_pass_filter2(800,30);
   often they should be called (in 20ms units) and the maximum time
   they are expected to take (in microseconds)
  */
-const AP_Scheduler::Task JoypadRemote::scheduler_tasks[] PROGMEM = {
+const AP_Scheduler::Task JoypadRemote::scheduler_tasks[] = {
     SCHED_TASK(update_sensor,   50,   2000),
     SCHED_TASK(live,             1,   1000),
 };
@@ -38,9 +37,15 @@ void JoypadRemote::setup(void)
     hal.gpio->pinMode(13, HAL_GPIO_OUTPUT);
     hal.gpio->write(13, 0);
 
-    for (uint8_t i = 0; i < 2; i++) {
+    for (uint8_t i = 0; i < 20; i++) {
+        hal.gpio->toggle(13);
+        hal.scheduler->delay(50);
+    }
+
+    for (uint8_t i = 0; i < SENSORS_COUNT; i++) {
         state[i].pin = i;
         _analogsensor[i] = new AnalogSensor(&state[i]);
+        low_pass_filter[i] = new LowPassFilter2pLong(800, 30);
     }
 
     for (int i = 22; i < 44; i++){
@@ -60,7 +65,7 @@ void JoypadRemote::setup(void)
 
 void JoypadRemote::loop(void)
 {
-    if ((AP_HAL::micros() - nowmicros) > 19990) {
+    if ((AP_HAL::micros() - nowmicros) > 19900) {
         scheduler.tick();
         scheduler.run(20000);
         nowmicros = AP_HAL::micros();
@@ -69,15 +74,18 @@ void JoypadRemote::loop(void)
 
 void JoypadRemote::update_sensor(void)
 {
-    _analogsensor[0]->update();
-    _analogsensor[1]->update();
+
+    for (uint8_t i = 0; i < SENSORS_COUNT; i++) {
+        _analogsensor[i]->update();
+    }
 
     if (!_sending) {
         hal.scheduler->suspend_timer_procs();
-        const uint16_t new_value1 =  state[1].distance_cm;
-        const uint16_t new_value2 =  state[0].distance_cm;
-        filtered_value1 = (int16_t)low_pass_filter.apply(new_value1);
-        filtered_value2 = (int16_t)low_pass_filter2.apply(new_value2);
+        const uint16_t *new_value[SENSORS_COUNT];
+        for (uint8_t i = 0; i < SENSORS_COUNT; i++) {
+            new_value[i] =   new uint16_t(state[i].distance_cm);
+            filtered_value[i] = (int16_t)low_pass_filter[i]->apply((int16_t)*new_value[i]);
+        }
         set_data();
         hal.scheduler->resume_timer_procs();
     }
@@ -94,8 +102,12 @@ void JoypadRemote::set_data(void)
         controller_data.button_array[(i - 22) / 8] |= (!hal.gpio->read(i)) << ((i - 22) % 8);
     }
 
-    controller_data.left_stick_x = filtered_value1;
-    controller_data.left_stick_y = filtered_value2;
+    controller_data.left_stick_x = filtered_value[LS_X];
+    controller_data.left_stick_y = filtered_value[LS_Y];
+    controller_data.right_stick_x = filtered_value[RS_X];
+    controller_data.right_stick_y = filtered_value[RS_Y];
+    controller_data.stick3_x = filtered_value[ST_X];
+    controller_data.stick3_y = filtered_value[ST_Y];
 
     set_controller_data(controller_data);
 }
