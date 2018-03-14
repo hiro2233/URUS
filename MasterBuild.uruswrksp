@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<UrusStudio_workspace_file>
+	<Workspace title="Workspace">
+		<Project filename="MasterApmLibs.usp" />
+		<Project filename="libraries/AP_Joypad/examples/joypadA/JoypadA.usp" />
+		<Project filename="Tools/joypad_remote/joypad_remote.usp" />
+	</Workspace>
+</UrusStudio_workspace_file>
