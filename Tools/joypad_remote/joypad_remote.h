@@ -8,6 +8,7 @@
 #include "analog_sensor.h"
 
 #define BUTTON_ARRAY_LENGTH 4
+#define SENSORS_COUNT 6
 
 class JoypadRemote {
 public:
@@ -16,6 +17,15 @@ public:
     void loop();
 
 private:
+
+    enum STICKS {
+        LS_X = 0,
+        LS_Y,
+        RS_X,
+        RS_Y,
+        ST_X,
+        ST_Y,
+    };
 
     typedef struct __data_controller
     {
@@ -36,20 +46,24 @@ private:
     } data_controller_t;
 
     AP_Scheduler scheduler;
-    AnalogSensor::state_t state[2];
-    AnalogSensor *_analogsensor[2];
+    AnalogSensor::state_t state[SENSORS_COUNT];
+    AnalogSensor *_analogsensor[SENSORS_COUNT];
 
     data_controller_t controller_data_buffer1;
     data_controller_t controller_data_buffer2;
     data_controller_t controller_data;
 
     uint32_t ins_counter;
-    static const AP_Scheduler::Task scheduler_tasks[];
+    static const AP_Scheduler::Task scheduler_tasks[] PROGMEM;
 
     uint32_t nowmicros;
     uint8_t pin;
+/*
     int16_t filtered_value1, filtered_value2;
-
+    int16_t filtered_value3, filtered_value4;
+    int16_t filtered_value5, filtered_value6;
+*/
+    int16_t filtered_value[SENSORS_COUNT];
     volatile static bool _sending;
 
     void update_sensor(void);
