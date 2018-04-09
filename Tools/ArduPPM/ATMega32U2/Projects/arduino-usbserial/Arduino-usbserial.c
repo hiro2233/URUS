@@ -35,7 +35,9 @@
  */
 
 #include "Arduino-usbserial.h"
+#ifdef ARDUPPM_ENC
 #include "../../../Libraries/PPM_Encoder.h"
+#endif
 
 
 /** Circular buffer to hold data from the host before it is sent to the device via the serial port. */
@@ -82,8 +84,9 @@ USB_ClassInfo_CDC_Device_t VirtualSerial_CDC_Interface =
 int main(void)
 {
 	// Start PPM Encoder
+#ifdef ARDUPPM_ENC
 	ppm_encoder_init();
-
+#endif
 
 	// Unmodified Arduino code from here
 	// --------------------------------------------
@@ -153,8 +156,10 @@ void SetupHardware(void)
 	/* Disable watchdog if enabled by bootloader/fuses */
 	
 	// Watchdog used by PPM Encoder to set failsafe values
-	//MCUSR &= ~(1 << WDRF);
-	//wdt_disable();
+#ifndef ARDUPPM_ENC
+	MCUSR &= ~(1 << WDRF);
+	wdt_disable();
+#endif
 
 	/* Hardware Initialization */
 	Serial_Init(9600, false);
