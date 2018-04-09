@@ -54,6 +54,9 @@
 #
 # make filename.i = Create a preprocessed source file for use in submitting
 #                   bug reports to the GCC project.
+# 
+# make MCUTARGET=[avrtarget] : Build for specific target, by default build for
+#                              atmega32u2.
 #
 # To rebuild project do "make clean" then "make all".
 #----------------------------------------------------------------------------
@@ -63,8 +66,23 @@
 #	versions of either avrdude or dfu-programmer, we specify a dummy
 #	part; AT90USB82 which is close enough in memory size and organization
 
-#MCU = atmega16u2
+ifneq ($(findstring atmega16u2, $(MCUTARGET)),)
+MCU = atmega16u2
+endif
+
+ifneq ($(findstring atmega32u2, $(MCUTARGET)),)
 MCU = atmega32u2
+DEFINES += -DARDUPPM_ENC=1
+CFLAGS += $(DEFINES)
+CXXFLAGS += $(DEFINES)
+endif
+
+ifeq ($(MCU),)
+MCU = atmega32u2
+DEFINES += -DARDUPPM_ENC=1
+CFLAGS += $(DEFINES)
+CXXFLAGS += $(DEFINES)
+endif
 
 MCU_AVRDUDE = $(MCU)
 MCU_DFU = $(MCU)
@@ -240,10 +258,10 @@ CPPDEFS += $(LUFA_OPTS)
 #  -Wall...:     warning level
 #  -Wa,...:      tell GCC to pass this to the assembler.
 #    -adhlns...: create assembler listing
-CFLAGS = -g$(DEBUG)
+CFLAGS += -g$(DEBUG)
 CFLAGS += $(CDEFS)
 CFLAGS += -O$(OPT)
-#CFLAGS += -mcall-prologues
+CFLAGS += -mcall-prologues
 CFLAGS += -funsigned-char
 CFLAGS += -funsigned-bitfields
 CFLAGS += -ffunction-sections
