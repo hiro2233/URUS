@@ -9,9 +9,14 @@
 
 #define BUTTON_ARRAY_LENGTH 4
 #define SENSORS_COUNT 6
+#define CONTROLLER_DATA_CNT 1
+#define PIN_FIRST   22
+#define PIN_LAST    44
 
 class JoypadRemote {
 public:
+
+    JoypadRemote();
 
     void setup();
     void loop();
@@ -51,7 +56,11 @@ private:
 
     data_controller_t controller_data_buffer1;
     data_controller_t controller_data_buffer2;
-    data_controller_t controller_data;
+    data_controller_t controller_data1;
+
+#if CONTROLLER_DATA_CNT > 1
+    data_controller_t controller_data2;
+#endif
 
     uint32_t ins_counter;
     static const AP_Scheduler::Task scheduler_tasks[] PROGMEM;
@@ -66,10 +75,13 @@ private:
     int16_t filtered_value[SENSORS_COUNT];
     volatile static bool _sending;
 
+    bool sw_pins;
+    bool sw_pins_pushing;
+
     void update_sensor(void);
     void send_data(void);
     void set_data(void);
     void live(void);
     data_controller_t get_empty_data_controller(void);
-    void set_controller_data(data_controller_t controller_data_set);
+    void set_controller_data(data_controller_t controller_data_set, uint8_t id);
 };
