@@ -62,7 +62,7 @@
 					<Add option="-mmcu=atmega2560" />
 				</Linker>
 				<ExtraCommands>
-					<Add before="sh -c &apos;./waf configure --board sitl --static &amp;&amp; ./waf --target=mavlink&apos;" />
+					<Add before='sh -c &quot;./waf configure --board sitl --static &amp;&amp; ./waf --target=mavlink&quot;' />
 				</ExtraCommands>
 			</Target>
 			<Target title="APM328_Release">
@@ -120,7 +120,7 @@
 					<Add option="-mmcu=atmega328p" />
 				</Linker>
 				<ExtraCommands>
-					<Add before="sh -c &apos;./waf configure --board sitl --static &amp;&amp; ./waf --target=mavlink&apos;" />
+					<Add before='sh -c &quot;./waf configure --board sitl --static &amp;&amp; ./waf --target=mavlink&quot;' />
 				</ExtraCommands>
 			</Target>
 			<Target title="APM16U_Release">
@@ -234,7 +234,7 @@
 					<Add option="-static-libgcc" />
 				</Linker>
 				<ExtraCommands>
-					<Add before="sh -c &apos;./waf configure --board uruscygwin &amp;&amp; ./waf --target=mavlink&apos;" />
+					<Add before='sh -c &quot;./waf configure --board uruscygwin &amp;&amp; ./waf --target=mavlink&quot;' />
 				</ExtraCommands>
 			</Target>
 			<Target title="URUSCYGWIN_Debug">
@@ -293,7 +293,7 @@
 					<Add option="-static-libgcc" />
 				</Linker>
 				<ExtraCommands>
-					<Add before="sh -c &apos;./waf configure --board uruscygwin &amp;&amp; ./waf --target=mavlink&apos;" />
+					<Add before='sh -c &quot;./waf configure --board uruscygwin &amp;&amp; ./waf --target=mavlink&quot;' />
 				</ExtraCommands>
 			</Target>
 		</Build>
