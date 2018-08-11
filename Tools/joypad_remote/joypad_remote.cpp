@@ -154,8 +154,8 @@ void JoypadRemote::set_data(void)
         controller_data2.button_array[i] = 0;
     }
 
-    controller_data2.right_stick_x = filtered_value[LS_X];
-    controller_data2.right_stick_y = filtered_value[LS_Y];
+    controller_data2.right_stick_x = filtered_value[LS_X1];
+    controller_data2.right_stick_y = filtered_value[LS_Y1];
 
     set_controller_data(controller_data2, 1);
 #endif

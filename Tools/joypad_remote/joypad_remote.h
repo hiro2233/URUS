@@ -30,6 +30,12 @@ private:
         RS_Y,
         ST_X,
         ST_Y,
+        LS_X1,
+        LS_Y1,
+        RS_X1,
+        RS_Y1,
+        ST_X1,
+        ST_Y1
     };
 
     typedef struct __data_controller
