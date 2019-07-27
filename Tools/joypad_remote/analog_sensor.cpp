@@ -36,9 +36,6 @@ AnalogSensor::AnalogSensor(state_t *_state):
         // failed to allocate a ADC channel? This shouldn't happen
         return;
     }
-
-    source->set_stop_pin((uint8_t)_state->stop_pin);
-    source->set_settle_time((uint16_t)_state->settle_time_ms);
 }
 
 void AnalogSensor::update_voltage(void)
@@ -47,14 +44,11 @@ void AnalogSensor::update_voltage(void)
        state.voltage_mv = 0;
        return;
    }
-   // cope with changed settings
-   source->set_pin(state.pin);
-   source->set_stop_pin((uint8_t)state.stop_pin);
-   source->set_settle_time((uint16_t)state.settle_time_ms);
+
    if (state.ratiometric) {
-       state.voltage_mv = source->voltage_average_ratiometric() * 1000U;
+       state.voltage_mv = source->voltage_average_ratiometric();
    } else {
-       state.voltage_mv = source->voltage_average() * 1000U;
+       state.voltage_mv = source->voltage_average();
    }
 }
 
@@ -65,7 +59,7 @@ void AnalogSensor::update(void)
 {
     update_voltage();
 
-    float volt = state.voltage_mv * 0.001f;
+    float volt = state.voltage_mv;
     float dist_m = 0;
     float scaling = state.scaling;
     float offset  = state.offset;
@@ -94,5 +88,5 @@ void AnalogSensor::update(void)
         dist_m = 0;
     }
 
-    state.distance_cm = dist_m * 100.0f;
+    state.distance_cm = dist_m * 250.0f;
 }

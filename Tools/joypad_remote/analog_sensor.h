@@ -31,12 +31,12 @@ public:
     typedef struct __state_t {
         uint8_t instance;    // the instance number of this RangeFinder
         uint16_t distance_cm; // distance: in cm
-        uint16_t voltage_mv;  // voltage in millivolts,
+        float voltage_mv;  // voltage in millivolts,
         uint8_t pin;
         uint8_t ratiometric = 1;
         uint8_t stop_pin = -1;
         uint16_t settle_time_ms = 0;
-        float scaling = 4.0;
+        float scaling = 1;
         float offset = 0;
         uint8_t function = 0;
         uint16_t min_distance_cm;
