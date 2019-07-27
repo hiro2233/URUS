@@ -14,7 +14,7 @@
 				<Option compiler="avr-gcc" />
 				<Compiler>
 					<Add option="-mcall-prologues" />
-					<Add option="-Os" />
+					<Add option="-O2" />
 					<Add option='-Wl,&quot;--gc-sections, --relax&quot;' />
 					<Add option="-std=gnu++11" />
 					<Add option="-ffunction-sections" />
@@ -65,7 +65,7 @@
 					<Add directory="../../build/apm2/lib/Release" />
 				</Linker>
 				<ExtraCommands>
-					<Add after="avr-size --mcu=atmega2560 --format=avr $(TARGET_OUTPUT_FILE)" />
+					<Add after="avr-size  $(TARGET_OUTPUT_FILE)" />
 					<Add after="avr-objcopy -R .eeprom -R .fuse -R .lock -R .signature -O ihex $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).hex" />
 					<Add after="avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).eep" />
 					<Mode after="always" />
@@ -263,6 +263,16 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="Parameters.cpp">
+			<Option target="APM2_Release" />
+			<Option target="URUSCYGWIN_Release" />
+			<Option target="URUSCYGWIN_Debug" />
+		</Unit>
+		<Unit filename="Parameters.h">
+			<Option target="APM2_Release" />
+			<Option target="URUSCYGWIN_Release" />
+			<Option target="URUSCYGWIN_Debug" />
+		</Unit>
 		<Unit filename="analog_sensor.cpp" />
 		<Unit filename="analog_sensor.h" />
 		<Unit filename="joypad_remote.cpp" />
