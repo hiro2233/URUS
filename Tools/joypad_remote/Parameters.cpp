@@ -1,10 +1,5 @@
 #include "joypad_remote.h"
 
-/*
- *  AntennaTracker parameter definitions
- *
- */
-
 #define GSCALAR(v, name, def) { joypadremote.g.v.vtype, name, Parameters::k_param_ ## v, &joypadremote.g.v, {def_value : def} }
 #define ASCALAR(v, name, def) { joypadremote.aparm.v.vtype, name, Parameters::k_param_ ## v, (const void *)&joypadremote.aparm.v, {def_value : def} }
 #define GGROUP(v, name, class) { AP_PARAM_GROUP, name, Parameters::k_param_ ## v, &joypadremote.g.v, {group_info : class::var_info} }
@@ -70,7 +65,7 @@ void JoypadRemote::load_parameters(void)
 
         // save the current format version
         g.format_version.set_and_save(Parameters::k_format_version);
-        hal.console->printf_PS(PSTR("ok.\n"));
+        hal.console->printf("formated!.\n");
     }
 
     //uint32_t before = AP_HAL::micros();
