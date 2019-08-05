@@ -21,7 +21,9 @@ public:
         _portNumber(portNumber),
         _listen_fd(-1),
         _console(console)
-    {}
+    {
+        _initialized = true;
+    }
 
     static CLCoreUrusUARTDriver *from(AP_HAL::UARTDriver *uart) {
         return static_cast<CLCoreUrusUARTDriver_Cygwin*>(uart);
@@ -35,7 +37,7 @@ public:
     void end();
     void flush();
     bool is_initialized() {
-        return true;
+        return _initialized;
     }
 
     void set_blocking_writes(bool blocking)
@@ -44,7 +46,7 @@ public:
     }
 
     bool tx_pending() {
-        return false;
+        return (_writebuffer.space() != 0);
     }
 
     /* Implementations of Stream virtual methods */
@@ -78,6 +80,7 @@ private:
     bool _nonblocking_writes;
     ByteBuffer _readbuffer{16384};
     ByteBuffer _writebuffer{16384};
+    bool _initialized = false;
 
     const char *_uart_path;
     uint32_t _uart_baudrate;
@@ -90,12 +93,17 @@ private:
     void _check_reconnect();
     void _tcp_start_client(const char *address, uint16_t port);
     void _check_connection(void);
-    static bool _select_check(int );
-    static void _set_nonblocking(int , bool is_console);
+    bool _select_check(int );
+    void _set_nonblocking(int , bool is_console);
     bool _use_rtscts;
 
     /* default configuration for uart driver */
-    const char *path = "tcp:0:nowait";
+    const char* path[3] = {
+        "tcp:0:nowait",
+        "uart:/dev/ttyUSB0:115200",
+        "uart:/dev/ttyACM0:115200",
+    };
+
     uint16_t _base_port = 5760;
 
     /*  Is scheduling using and active?

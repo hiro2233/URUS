@@ -63,7 +63,7 @@ void CLCoreUrusUARTDriver_Cygwin::begin(uint32_t baud, uint16_t rxSpace, uint16_
 
     _status_scheduling = !_urus_core.scheduler->get_timer_event_eval();
     char *saveptr = nullptr;
-    char *s = strdup(path);
+    char *s = strdup(path[_portNumber]);
     char *devtype = strtok_r(s, ":", &saveptr);
     char *args1 = strtok_r(nullptr, ":", &saveptr);
     char *args2 = strtok_r(nullptr, ":", &saveptr);
@@ -73,22 +73,36 @@ void CLCoreUrusUARTDriver_Cygwin::begin(uint32_t baud, uint16_t rxSpace, uint16_
         _tcp_start_connection(port, wait);
     } else if (strcmp(devtype, "tcpclient") == 0) {
         if (args2 == nullptr) {
-            AP_HAL::panic("Invalid tcp client path: %s", path);
+            AP_HAL::panic("Invalid tcp client path: %s\n", path[_portNumber]);
         }
         uint16_t port = atoi(args2);
         _tcp_start_client(args1, port);
     } else if (strcmp(devtype, "uart") == 0) {
         uint32_t baudrate = args2? atoi(args2) : baud;
-        ::printf("UART connection %s:%u\n", args1, baudrate);
+        ::printf("uart%c connection %s:%u\n", (char)(0x41 + _portNumber), args1, baudrate);
         _uart_path = strdup(args1);
         _uart_baudrate = baudrate;
+
+        if (rxSpace != 0) {
+            _readbuffer.set_size(rxSpace);
+        } else {
+            _readbuffer.set_size(512);
+        }
+
+        if (txSpace != 0) {
+            _writebuffer.set_size(txSpace);
+        } else {
+            _writebuffer.set_size(512);
+        }
+
+        _use_rtscts = false;
+
         _uart_start_connection();
     } else {
-        AP_HAL::panic("Invalid device path: %s", path);
+        AP_HAL::panic("Invalid device path: %s\n", path[_portNumber]);
     }
     free(s);
 
-    _set_nonblocking(_fd, _console);
 }
 
 void CLCoreUrusUARTDriver_Cygwin::end()
@@ -100,6 +114,7 @@ uint32_t CLCoreUrusUARTDriver_Cygwin::available(void)
     _check_connection();
 
     if (!_connected) {
+        _check_reconnect();
         return 0;
     }
 
@@ -109,7 +124,9 @@ uint32_t CLCoreUrusUARTDriver_Cygwin::available(void)
 uint32_t CLCoreUrusUARTDriver_Cygwin::txspace(void)
 {
     _check_connection();
+
     if (!_connected) {
+        _check_reconnect();
         return 0;
     }
     return _writebuffer.space();
@@ -128,12 +145,14 @@ int16_t CLCoreUrusUARTDriver_Cygwin::read(void)
 
 void CLCoreUrusUARTDriver_Cygwin::flush(void)
 {
+	_readbuffer.clear();
+	_writebuffer.clear();
 }
 
 size_t CLCoreUrusUARTDriver_Cygwin::write(uint8_t c)
 {
     if (txspace() <= 0) {
-        _timer_tick();
+        //_timer_tick();
         return 0;
     }
 
@@ -185,6 +204,7 @@ void CLCoreUrusUARTDriver_Cygwin::_tcp_start_connection(uint16_t port, bool wait
         _use_send_recv = false;
         _listen_fd = -1;
         _fd = 1;
+        _set_nonblocking(_fd, _console);
         return;
     }
 
@@ -242,7 +262,7 @@ void CLCoreUrusUARTDriver_Cygwin::_tcp_start_connection(uint16_t port, bool wait
         fflush(stdout);
         _fd = accept(_listen_fd, nullptr, nullptr);
         if (_fd == -1) {
-            fprintf(stderr, "accept() error - %s", strerror(errno));
+            fprintf(stderr, "accept() error - %s\n", strerror(errno));
             exit(1);
         }
         setsockopt(_fd, SOL_SOCKET, SO_REUSEADDR, &one, sizeof(one));
@@ -312,16 +332,15 @@ void CLCoreUrusUARTDriver_Cygwin::_uart_start_connection(void)
     if (!_connected) {
         _fd = ::open(_uart_path, O_RDWR | O_CLOEXEC);
         if (_fd == -1) {
+            ::printf("\nUnable to open uart%c on %s !!!\n\n", (char)(0x41 + _portNumber), _uart_path);
+            _uart_path = nullptr;
             return;
         }
-        // use much smaller buffer sizes on real UARTs
-        _writebuffer.set_size(1024);
-        _readbuffer.set_size(512);
-        ::printf("Opened %s\n", _uart_path);
+        ::printf("Opened uart%c on %s\n", (char)(0x41 + _portNumber), _uart_path);
     }
 
     if (_fd == -1) {
-        AP_HAL::panic("Unable to open UART %s", _uart_path);
+        ::printf("\nUnable to open uart%c on %s !!!\n\n", (char)(0x41 + _portNumber), _uart_path);
     }
 
     // set non-blocking
@@ -365,7 +384,7 @@ void CLCoreUrusUARTDriver_Cygwin::_check_connection(void)
             _connected = true;
             setsockopt(_fd, IPPROTO_TCP, TCP_NODELAY, &one, sizeof(one));
             setsockopt(_fd, SOL_SOCKET, SO_REUSEADDR, &one, sizeof(one));
-            fprintf(stdout, "New connection on serial port %u\n", _portNumber);
+            fprintf(stdout, "New connection on uart%c serial port %u\n", (char)(0x41 + _portNumber), _portNumber);
         }
     }
 }
@@ -434,7 +453,7 @@ void CLCoreUrusUARTDriver_Cygwin::_check_reconnect(void)
 void CLCoreUrusUARTDriver_Cygwin::_timer_tick(void)
 {
     if (!_connected) {
-        _check_reconnect();
+        //_check_reconnect();
         return;
     }
     uint32_t navail;
@@ -480,7 +499,7 @@ void CLCoreUrusUARTDriver_Cygwin::_timer_tick(void)
                 // the socket has reached EOF
                 close(_fd);
                 _connected = false;
-                fprintf(stdout, "Closed connection on serial port %u\n", _portNumber);
+                fprintf(stdout, "Closed connection on uart%c serial port %u\n", (char)(0x41 + _portNumber), _portNumber);
                 fflush(stdout);
                 return;
             }
