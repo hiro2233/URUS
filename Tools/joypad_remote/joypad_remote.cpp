@@ -131,6 +131,8 @@ void JoypadRemote::live()
     _cnt_update_sensor = _cnt_update_sensor % 3;
 #endif
 #endif // CONFIG_JOYPAD
+
+    //hal.gpio->toggle(13);
 }
 
 void JoypadRemote::setup(void)
@@ -242,7 +244,6 @@ void JoypadRemote::update_sensor(void)
 #else
     _analogsensor[0]->update();
     _analogsensor[1]->update();
-
 #endif
 
     if (!_sending) {
