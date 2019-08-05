@@ -18,6 +18,9 @@ public:
     void    write(uint8_t pin, uint8_t value);
     void    toggle(uint8_t pin);
 
+    void    write_port(uint8_t portnr, uint8_t value) {};
+    uint8_t read_port(uint8_t portnr) { return 0;};
+
     /* Alternative interface: */
     AP_HAL::DigitalSource* channel(uint16_t n);
 
@@ -38,7 +41,7 @@ public:
     CLCoreDigitalSource_Cygwin(uint8_t v);
     void    mode(uint8_t output);
     uint8_t read();
-    void    write(uint8_t value); 
+    void    write(uint8_t value);
     void    toggle();
 private:
     uint8_t _v;
