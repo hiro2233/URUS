@@ -96,6 +96,7 @@ public:
     };
 
     virtual void run(int argc, char * const argv[], Callbacks* callbacks) const = 0;
+    virtual void run(int argc, char * const argv[]) const {}
 
     AP_HAL::UARTDriver* uartA;
     AP_HAL::UARTDriver* uartB;
