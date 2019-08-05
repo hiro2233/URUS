@@ -25,6 +25,7 @@ volatile bool CLCoreUrusScheduler_Cygwin::_timer_event_missed = false;
 AP_HAL::MemberProc CLCoreUrusScheduler_Cygwin::_timer_proc[URUS_SCHEDULER_MAX_TIMER_PROCS] = {nullptr};
 uint8_t CLCoreUrusScheduler_Cygwin::_num_timer_procs = 0;
 bool CLCoreUrusScheduler_Cygwin::_in_timer_proc = false;
+bool CLCoreUrusScheduler_Cygwin::_in_delay_proc = false;
 
 AP_HAL::MemberProc CLCoreUrusScheduler_Cygwin::_io_proc[URUS_SCHEDULER_MAX_TIMER_PROCS] = {nullptr};
 uint8_t CLCoreUrusScheduler_Cygwin::_num_io_procs = 0;
@@ -46,6 +47,7 @@ bool CLCoreUrusScheduler_Cygwin::in_main_thread() const
 
 void CLCoreUrusScheduler_Cygwin::usleep_win(DWORD waitTime)
 {
+#ifndef __unix__
 	LARGE_INTEGER perfCnt_time, start_time, now_time;
 
 	QueryPerformanceFrequency(&perfCnt_time);
@@ -54,6 +56,17 @@ void CLCoreUrusScheduler_Cygwin::usleep_win(DWORD waitTime)
 	do {
 		QueryPerformanceCounter((LARGE_INTEGER*) &now_time);
 	} while ((now_time.QuadPart - start_time.QuadPart) / float(perfCnt_time.QuadPart) * 1000 * 1000 < waitTime);
+#endif // __unix__
+}
+
+void CLCoreUrusScheduler_Cygwin::usleep_nix(uint16_t waitTime)
+{
+
+    struct timespec ts;
+    ts.tv_sec = 0;
+    ts.tv_nsec = waitTime * 1000UL;
+    while (nanosleep(&ts, &ts) == -1 && errno == EINTR);
+
 }
 
 void *CLCoreUrusScheduler_Cygwin::_fire_isr_timer(void *arg)
@@ -65,16 +78,21 @@ void *CLCoreUrusScheduler_Cygwin::_fire_isr_timer(void *arg)
 
     _isr_timer_running = true;
 
-    while(1) {
+    while(_isr_timer_running) {
         /* this make frequency granulation for
          * shal isr timer with posix thread
          */
+#ifndef __unix__
         usleep_win(clk_core_timers.isr_time);
+#else
+        usleep_nix(clk_core_timers.isr_time);
+#endif // __unix__
         //hal.scheduler->delay_microseconds(clk_core_timers.isr_time);
         fire_isr_timer();
     }
 
     _isr_timer_running = false;
+    fprintf(stdout, "isr timer stoped!\n");
 
     return NULL;
 }
@@ -88,14 +106,20 @@ void *CLCoreUrusScheduler_Cygwin::_fire_isr_sched(void *arg)
 
     _isr_sched_running = true;
 
-    while(1) {
+    while(_isr_sched_running) {
         /* this make frequency granulation for
          * shal isr timer with posix thread
          */
+#ifndef __unix__
         usleep_win((clk_core_timers.isr_time / CORE_SPEED_FREQ_PERCENT));
+#else
+        usleep_nix((clk_core_timers.isr_time / CORE_SPEED_FREQ_PERCENT));
+#endif // __unix__
         fire_isr_sched();
+
     }
     _isr_sched_running = false;
+    fprintf(stdout, "isr sched stoped!\n");
 
     return NULL;
 }
@@ -141,6 +165,13 @@ void CLCoreUrusScheduler_Cygwin::delay_microseconds(uint16_t usec)
 
 void CLCoreUrusScheduler_Cygwin::delay(uint16_t ms)
 {
+
+    if (_in_delay_proc) {
+        return;
+    }
+
+    _in_delay_proc = true;
+
     start = AP_HAL::millis();
     now_micros = AP_HAL::micros();
     dt_micros = 0;
@@ -167,6 +198,8 @@ void CLCoreUrusScheduler_Cygwin::delay(uint16_t ms)
             }
         }
     }
+
+    _in_delay_proc = false;
 }
 
 void CLCoreUrusScheduler_Cygwin::register_delay_callback(AP_HAL::Proc proc,
@@ -315,6 +348,7 @@ void CLCoreUrusScheduler_Cygwin::_run_io_procs(bool called_from_isr)
     _in_io_proc = false;
 
     if (!_urus_core.scheduler->get_timer_event_eval()) {
+        CLCoreUrusUARTDriver_Cygwin::from(hal.console)->_timer_tick();
         CLCoreUrusUARTDriver_Cygwin::from(hal.uartA)->_timer_tick();
         CLCoreUrusUARTDriver_Cygwin::from(hal.uartB)->_timer_tick();
         CLCoreUrusUARTDriver_Cygwin::from(hal.uartC)->_timer_tick();
@@ -331,6 +365,11 @@ void CLCoreUrusScheduler_Cygwin::_run_io_procs(bool called_from_isr)
 void CLCoreUrusScheduler_Cygwin::stop_clock(uint64_t time_usec)
 {
     _stopped_clock_usec = time_usec;
+    if (_stopped_clock_usec == 0) {
+        _isr_sched_running = false;
+        _isr_timer_running = false;
+        return;
+    }
     _run_io_procs(false);
 }
 
