@@ -514,6 +514,11 @@ class urushal(Board):
         env.AP_LIBRARIES += [
             'AP_HAL_URUS',
             'AP_HAL_URUS/CORE_URUS',
+            'modules/urus_modules/UR_Protocol/**/*.cpp',
+        ]
+
+        env.INCLUDES += [
+            cfg.srcnode.find_dir('modules/urus_modules').abspath()
         ]
 
     def build(self, bld):
@@ -524,8 +529,12 @@ class uruscygwin(urushal):
         super(uruscygwin, self).configure_env(cfg, env)
 
         env.DEFINES.update(
+            CONFIG_HAL_BOARD = 'HAL_BOARD_URUS',
             CONFIG_HAL_BOARD_SUBTYPE = 'HAL_BOARD_SUBTYPE_NONE',
             CONFIG_SHAL_CORE = 'SHAL_CORE_CYGWIN',
+            ICAO_PORT_MODE = 'ICAO_ALT_BENCH',
+            NATIVE_SCHED = 'ENABLED',
+            WITH_ICAO_ALT = 'DISABLED',
         )
 
         if sys.platform == 'cygwin':
@@ -583,6 +592,7 @@ class uruscygwin(urushal):
             'AP_Joypad',
             'AP_HAL_URUS/dummy_libs',
             'AP_HAL_URUS/CORE_URUS/U_CoreCygwin',
+            'UR_Atmosphere',
         ]
 
 class urusandroid(urushal):
