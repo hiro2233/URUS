@@ -98,10 +98,12 @@ private:
     bool _use_rtscts;
 
     /* default configuration for uart driver */
-    const char* path[3] = {
+    const char* path[5] = {
         "tcp:0:nowait",
         "uart:/dev/ttyUSB0:115200",
         "uart:/dev/ttyACM0:115200",
+        "tcp:0:nowait",
+        "tcp:0:nowait",
     };
 
     uint16_t _base_port = 5760;
