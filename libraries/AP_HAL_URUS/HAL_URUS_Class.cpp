@@ -33,7 +33,7 @@ HAL_URUS::HAL_URUS() :
 {
     scheduler = NSCORE_URUS::get_scheduler();
     uartA = NSCORE_URUS::get_uartA_Driver();
-    console = uartA;
+    console = NSCORE_URUS::get_uartA_Driver();
     uartB = NSCORE_URUS::get_uartB_Driver();
     uartC = NSCORE_URUS::get_uartC_Driver();
     uartD = NSCORE_URUS::get_uartD_Driver();
@@ -47,6 +47,20 @@ HAL_URUS::HAL_URUS() :
     gpio = NSCORE_URUS::get_GPIO();
     rcin = NSCORE_URUS::get_RCInput();
     rcout = NSCORE_URUS::get_RCOutput();
+}
+
+void HAL_URUS::run(int argc, char * const argv[]) const
+{
+    _urus_core.init_core();
+
+    scheduler->init();
+    uartA->begin(115200);
+
+    gpio->init();
+    rcout->init();
+    rcin->init();
+
+    analogin->init();
 }
 
 void HAL_URUS::run(int argc, char * const argv[], Callbacks* callbacks) const
@@ -63,8 +77,8 @@ void HAL_URUS::run(int argc, char * const argv[], Callbacks* callbacks) const
     rcin->init();
 
     analogin->init();
-    
     callbacks->setup();
+    scheduler->system_initialized();
 
     for (;;) {
         callbacks->loop();
