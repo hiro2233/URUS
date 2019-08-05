@@ -24,14 +24,14 @@
 /* Frequency in HZ for CORE isr timer.
  * Maximum frequency is 1000000HZ - 1MHZ
  */
-#define CORE_ISR_TIMER_FREQ 5000
-#define CORE_SPEED_PERCENT 25.0
+#define CORE_ISR_TIMER_FREQ 1000
+#define CORE_SPEED_PERCENT 33.0
 #define CORE_SPEED_FREQ_PERCENT CORE_SPEED_PERCENT / 100.0
 
 /* Frequency in HZ for SHAL isr scheduler.
  * SHAL_ISR_SCHED_FREQ < CORE_ISR_TIMER_FREQ ever.
  */
-#define SHAL_ISR_SCHED_FREQ 1000
+#define SHAL_ISR_SCHED_FREQ 500
 
 class NSCORE_URUS::CLCoreUrusScheduler : public AP_HAL::Scheduler {
 public:
