@@ -264,3 +264,11 @@
 #if HAL_CPU_CLASS >= HAL_CPU_CLASS_150
 #define PROGMEM
 #endif
+
+#ifndef ENABLED
+#define ENABLED 1
+#endif
+
+#ifndef DISABLED
+#define DISABLED 0
+#endif
