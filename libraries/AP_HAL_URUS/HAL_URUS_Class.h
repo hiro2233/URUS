@@ -8,6 +8,7 @@ class HAL_URUS : public AP_HAL::HAL {
 public:
     HAL_URUS();
     void run(int argc, char * const argv[], Callbacks* callbacks) const override;
+    void run(int argc, char * const argv[]) const override;
 };
 
 #endif // CONFIG_HAL_BOARD == HAL_BOARD_URUS
