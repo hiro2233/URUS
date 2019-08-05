@@ -4,5 +4,7 @@
 		<Project filename="MasterApmLibs.usp" />
 		<Project filename="libraries/AP_Joypad/examples/joypadA/JoypadA.usp" />
 		<Project filename="Tools/joypad_remote/joypad_remote.usp" />
+		<Project filename="Tools/altimeter_encoder/altimeter_encoder.usp" />
+		<Project filename="Tools/altitude_encoder_bench/altitude_encoder_bench.usp" />
 	</Workspace>
 </UrusStudio_workspace_file>
