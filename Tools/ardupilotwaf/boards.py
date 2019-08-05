@@ -514,11 +514,11 @@ class urushal(Board):
         env.AP_LIBRARIES += [
             'AP_HAL_URUS',
             'AP_HAL_URUS/CORE_URUS',
-            'modules/urus_modules/UR_Protocol/**/*.cpp',
+            'modules/urus_modules/modlibs/UR_Protocol/**/*.cpp',
         ]
 
         env.INCLUDES += [
-            cfg.srcnode.find_dir('modules/urus_modules').abspath()
+            cfg.srcnode.find_dir('modules/urus_modules/modlibs').abspath()
         ]
 
     def build(self, bld):
