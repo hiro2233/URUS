@@ -135,6 +135,13 @@ const AP_Param::GroupInfo AP_Baro::var_info[] = {
     // Slot 12 used to be TEMP3
 #endif
 
+    // @Param: ALTCALC_MODE
+    // @DisplayName: Altitude Calculation Mode
+    // @Description: Select altitude calculation mode: set 1 for above mean sea level calculation, set 0 for above mean ground level calculation.
+    // @Values: 0:amgndl,1:amsl
+    // @User: Advanced
+    AP_GROUPINFO("ALTCALC_MODE", 13, AP_Baro, _altcalc_mode, 0),
+
     AP_GROUPEND
 };
 
@@ -147,7 +154,7 @@ AP_Baro *AP_Baro::_instance;
 AP_Baro::AP_Baro()
 {
     _instance = this;
-    
+    _atm = UR_Atmosphere::get_instance();
     AP_Param::setup_object_defaults(this, var_info);
 }
 
@@ -270,7 +277,6 @@ float AP_Baro::get_altitude_difference(float base_pressure, float pressure) cons
     return ret;
 }
 
-
 // return current scale factor that converts from equivalent to true airspeed
 // valid for altitudes up to 10km AMSL
 // assumes standard atmosphere lapse rate
@@ -392,6 +398,10 @@ void AP_Baro::init(void)
         _user_ground_temperature.notify();
     }
 
+    if (!_atm) {
+        _atm = new UR_Atmosphere;
+    }
+
     if (_hil_mode) {
         drivers[0] = new AP_Baro_HIL(*this);
         _num_drivers = 1;
@@ -402,7 +412,7 @@ void AP_Baro::init(void)
     ADD_BACKEND(new AP_Baro_SITL(*this));
     return;
 #endif
-    
+
 #if HAL_WITH_UAVCAN
     bool added;
     do {
@@ -448,7 +458,7 @@ void AP_Baro::init(void)
         ADD_BACKEND(AP_Baro_MS56XX::probe(*this,
                                           std::move(hal.spi->get_device(HAL_BARO_MS5611_NAME))));
         break;
-        
+
     case AP_BoardConfig::PX4_BOARD_AEROFC:
 #ifdef HAL_BARO_MS5607_I2C_BUS
         ADD_BACKEND(AP_Baro_MS56XX::probe(*this,
@@ -483,7 +493,7 @@ void AP_Baro::init(void)
                                             std::move(hal.i2c_mgr->get_device(1, 0x63)),
                                             std::move(hal.spi->get_device(HAL_INS_MPU60x0_NAME))));
         break;
-        
+
     default:
         break;
     }
@@ -539,8 +549,7 @@ void AP_Baro::init(void)
     ADD_BACKEND(AP_Baro_LPS2XH::probe(*this,
                                       std::move(hal.spi->get_device(HAL_BARO_LPS22H_NAME))));
 #elif HAL_BARO_DEFAULT == HAL_BARO_URUS
-    drivers[0] = new AP_Baro_URUS(*this);
-    _num_drivers = 1;
+    drivers[_num_drivers++] = new AP_Baro_URUS(*this);
 #endif
 
     // can optionally have baro on I2C too
@@ -551,6 +560,7 @@ void AP_Baro::init(void)
 
         ADD_BACKEND(AP_Baro_KellerLD::probe(*this,
                                           std::move(hal.i2c_mgr->get_device(_ext_bus, HAL_BARO_KELLERLD_I2C_ADDR))));
+
 #else
         ADD_BACKEND(AP_Baro_MS56XX::probe(*this,
                                           std::move(hal.i2c_mgr->get_device(_ext_bus, HAL_BARO_MS5611_I2C_ADDR))));
@@ -561,7 +571,6 @@ void AP_Baro::init(void)
         AP_BoardConfig::sensor_config_error("Baro: unable to initialise driver");
     }
 }
-
 
 /*
   call update on all drivers
@@ -585,15 +594,32 @@ void AP_Baro::update(void)
     for (uint8_t i=0; i<_num_sensors; i++) {
         if (sensors[i].healthy) {
             // update altitude calculation
+            _atm->consume_updated();
+            _atm->update(i);
+
             float ground_pressure = sensors[i].ground_pressure;
             if (!is_positive(ground_pressure) || isnan(ground_pressure) || isinf(ground_pressure)) {
                 sensors[i].ground_pressure = sensors[i].pressure;
             }
-            float altitude = sensors[i].altitude;
-            float corrected_pressure = sensors[i].pressure + sensors[i].p_correction;
+
+            int alt_mode = _altcalc_mode;
+            float altitude_am = 0;
+            switch (alt_mode) {
+            case 0:
+                altitude_am = get_altitude_difference(sensors[i].ground_pressure, (sensors[i].pressure + sensors[i].p_correction));
+                break;
+            case 1:
+                altitude_am = _atm->get_altitude_amsl();
+                break;
+            default:
+                ;
+            }
+
+            float altitude = altitude_am;
             if (sensors[i].type == BARO_TYPE_AIR) {
-                altitude = get_altitude_difference(sensors[i].ground_pressure, corrected_pressure);
+                altitude = altitude_am;
             } else if (sensors[i].type == BARO_TYPE_WATER) {
+                float corrected_pressure = sensors[i].pressure + sensors[i].p_correction;
                 //101325Pa is sea level air pressure, 9800 Pascal/ m depth in water.
                 //No temperature or depth compensation for density of water.
                 altitude = (sensors[i].ground_pressure - corrected_pressure) / 9800.0f / _specific_gravity;
@@ -653,7 +679,6 @@ uint8_t AP_Baro::register_sensor(void)
     return _num_sensors++;
 }
 
-
 /*
   check if all barometers are healthy
  */
@@ -674,4 +699,3 @@ void AP_Baro::set_pressure_correction(uint8_t instance, float p_correction)
         sensors[instance].p_correction = p_correction;
     }
 }
-
