@@ -7,6 +7,13 @@
 #define SHAL_CORE_ANDROID   2
 #define SHAL_CORE_APM       3
 
+#ifndef ENABLED
+#define ENABLED 1
+#endif // ENABLED
+#ifndef DISABLED
+#define DISABLED 0
+#endif // DISABLED
+
 #ifndef HIGH
 #define HIGH 1
 #endif
@@ -28,6 +35,9 @@
 #define HAL_INS_DEFAULT HAL_INS_HIL
 #define HAL_BARO_DEFAULT HAL_BARO_URUS
 #define HAL_COMPASS_DEFAULT HAL_COMPASS_URUS
+#define HAL_GPIO_A_LED_PIN      1
+#define HAL_GPIO_B_LED_PIN      2
+#define HAL_GPIO_C_LED_PIN      3
 #elif (CONFIG_SHAL_CORE == SHAL_CORE_APM) && defined(SHAL_CORE_APM2)
 #define HAL_CPU_CLASS HAL_CPU_CLASS_16
 #define HAL_STORAGE_SIZE            4096
