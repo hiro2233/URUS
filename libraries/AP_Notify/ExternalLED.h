@@ -21,8 +21,12 @@
 
 #include "NotifyDevice.h"
 
+#ifndef HIGH
 #define HIGH 1
+#endif // HIGH
+#ifndef LOW
 #define LOW 0
+#endif // LOW
 
 class ExternalLED: public NotifyDevice
 {

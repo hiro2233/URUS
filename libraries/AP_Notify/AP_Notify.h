@@ -14,6 +14,7 @@
  */
 #pragma once
 
+#include <AP_HAL/AP_HAL.h>
 #include <AP_Common/AP_Common.h>
 #include <AP_Param/AP_Param.h>
 #include <GCS_MAVLink/GCS_MAVLink.h>
@@ -50,7 +51,6 @@ public:
     static AP_Notify *instance(void) {
         return _instance;
     }
-    
     // Oreo LED Themes
     enum Oreo_LED_Theme {
         OreoLED_Disabled        = 0,    // Disabled the OLED driver entirely
