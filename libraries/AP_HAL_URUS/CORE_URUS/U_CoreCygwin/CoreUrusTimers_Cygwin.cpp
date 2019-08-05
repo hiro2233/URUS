@@ -95,7 +95,7 @@ void CLCoreUrusTimers_Cygwin::_measure_time_proccess()
 
 uint64_t CLCoreUrusTimers_Cygwin::get_core_hrdtime ()
 {
-    return (_scheduler->get_isr_timer_tick() - nowt) * _scheduler->get_timer_dial();
+    return (_scheduler->get_isr_timer_tick() * _scheduler->get_timer_dial()) - nowt;
 }
 
 uint32_t CLCoreUrusTimers_Cygwin::get_core_micros32()
