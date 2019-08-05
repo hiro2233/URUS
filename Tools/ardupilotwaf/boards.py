@@ -61,7 +61,8 @@ class Board:
         cfg.ap_common_checks()
 
         cfg.env.prepend_value('INCLUDES', [
-            cfg.srcnode.find_dir('libraries/AP_Common/missing').abspath()
+            cfg.srcnode.find_dir('libraries/AP_Common/missing').abspath(),
+            cfg.srcnode.find_dir('modules/urus_modules/modlibs').abspath()
         ])
 
     def configure_env(self, cfg, env):
@@ -639,6 +640,7 @@ class linux(Board):
         env.LINKFLAGS += ['-pthread',]
         env.AP_LIBRARIES += [
             'AP_HAL_Linux',
+            'modules/urus_modules/modlibs/UR_Protocol/**/*.cpp',
         ]
 
         if self.with_uavcan:
@@ -902,6 +904,7 @@ class px4(Board):
         ]
         env.AP_LIBRARIES += [
             'AP_HAL_PX4',
+            'modules/urus_modules/modlibs/UR_Protocol/**/*.cpp',
         ]
         env.GIT_SUBMODULES += [
             'PX4Firmware',
