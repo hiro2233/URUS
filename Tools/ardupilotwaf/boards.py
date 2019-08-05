@@ -904,6 +904,7 @@ class px4(Board):
         ]
         env.AP_LIBRARIES += [
             'AP_HAL_PX4',
+            'UR_Atmosphere',
             'modules/urus_modules/modlibs/UR_Protocol/**/*.cpp',
         ]
         env.GIT_SUBMODULES += [
