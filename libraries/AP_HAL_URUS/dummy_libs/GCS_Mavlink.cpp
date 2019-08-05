@@ -4,7 +4,7 @@
 
 GCS_Dummy _gcs;
 
-#if defined(SHAL_CORE_APM2)
+#if defined(SHAL_CORE_APM2) || defined(SHAL_CORE_MEGA02)
 void (*GCS_MAVLINK::msg_snoop)(const mavlink_message_t* msg) = nullptr;
 
 GCS *GCS::_singleton = nullptr;
@@ -27,7 +27,7 @@ void GCS_MAVLINK::send_parameter_value_all(const char *param_name, ap_var_type p
   send a text message to all GCS
  */
 
-#if defined(SHAL_CORE_APM2)
+#if defined(SHAL_CORE_APM2) || defined(SHAL_CORE_MEGA02)
 void GCS::send_text(MAV_SEVERITY severity, const char *fmt, ...)
 {}
 
