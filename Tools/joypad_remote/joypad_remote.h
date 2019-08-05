@@ -10,6 +10,8 @@
 #include "Parameters.h"
 
 #define BUTTON_ARRAY_LENGTH 4
+#define SENSORS_COUNT 9
+#define CONTROLLER_DATA_CNT 2
 #define PIN_FIRST   22
 #define PIN_LAST    44
 
