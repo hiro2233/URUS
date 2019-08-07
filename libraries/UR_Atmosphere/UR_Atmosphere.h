@@ -58,7 +58,7 @@ private:
         float altitude_amsl;
         float qfe_pressure;
         float qnh_pressure;
-        float updated;
+        bool updated;
     } atm_status;
 
     AP_Baro *_barometer;
