@@ -604,9 +604,10 @@ void AP_Baro::update(void)
 
             int alt_mode = _altcalc_mode;
             float altitude_am = 0;
+            float corrected_pressure = sensors[i].pressure + sensors[i].p_correction;
             switch (alt_mode) {
             case 0:
-                altitude_am = get_altitude_difference(sensors[i].ground_pressure, (sensors[i].pressure + sensors[i].p_correction));
+                altitude_am = get_altitude_difference(sensors[i].ground_pressure, corrected_pressure);
                 break;
             case 1:
                 altitude_am = _atm->get_altitude_amsl();
@@ -615,11 +616,10 @@ void AP_Baro::update(void)
                 ;
             }
 
-            float altitude = altitude_am;
+            float altitude = sensors[i].altitude;
             if (sensors[i].type == BARO_TYPE_AIR) {
                 altitude = altitude_am;
             } else if (sensors[i].type == BARO_TYPE_WATER) {
-                float corrected_pressure = sensors[i].pressure + sensors[i].p_correction;
                 //101325Pa is sea level air pressure, 9800 Pascal/ m depth in water.
                 //No temperature or depth compensation for density of water.
                 altitude = (sensors[i].ground_pressure - corrected_pressure) / 9800.0f / _specific_gravity;
