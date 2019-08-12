@@ -6,6 +6,11 @@
 
 #ifdef __GNUC__
  #define WARN_IF_UNUSED __attribute__ ((warn_unused_result))
+
+ #define GCC_VERSION (__GNUC__ * 10000 \
+                     + __GNUC_MINOR__ * 100 \
+                     + __GNUC_PATCHLEVEL__)
+
 #else
  #define WARN_IF_UNUSED
 #endif
