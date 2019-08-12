@@ -20,7 +20,9 @@
  */
 #pragma once
 
+#if (GCC_VERSION >= 40900)
 #pragma GCC optimize("O3")
+#endif
 
 #define EK2_DISABLE_INTERRUPTS 0
 
@@ -63,7 +65,7 @@ public:
 
     // setup this core backend
     bool setup_core(NavEKF2 *_frontend, uint8_t _imu_index, uint8_t _core_index);
-    
+
     // Initialise the states from accelerometer and magnetometer data (if present)
     // This method can only be used when the vehicle is static
     bool InitialiseFilterBootstrap(void);
@@ -305,7 +307,7 @@ public:
 
     // get timing statistics structure
     void getTimingStatistics(struct ekf_timing &timing);
-    
+
 private:
     // Reference to the global EKF frontend for parameters
     NavEKF2 *frontend;
@@ -714,7 +716,7 @@ private:
 
     // update timing statistics structure
     void updateTimingStatistics(void);
-    
+
     // Length of FIFO buffers used for non-IMU sensor data.
     // Must be larger than the time period defined by IMU_BUFFER_LENGTH
     static const uint32_t OBS_BUFFER_LENGTH = 5;
@@ -1124,7 +1126,7 @@ private:
 
     // timing statistics
     struct ekf_timing timing;
-    
+
     // should we assume zero sideslip?
     bool assume_zero_sideslip(void) const;
 
