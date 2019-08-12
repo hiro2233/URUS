@@ -124,13 +124,13 @@
 				</ExtraCommands>
 			</Target>
 			<Target title="URUSCYGWIN_Release">
-				<Option output="../../../../build/uruscygwin/Release/HelloUrusConsole" prefix_auto="1" extension_auto="1" />
+				<Option output="../../../../build/uruscygwin/examples/Release/HelloUrusConsole" prefix_auto="1" extension_auto="1" />
 				<Option object_output="../../../../build/uruscygwin/obj/Release" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Option use_console_runner="0" />
 				<Compiler>
-					<Add option="-Os" />
+					<Add option="-O3" />
 					<Add option="-std=gnu++11" />
 					<Add option="-ffunction-sections" />
 					<Add option="-fdata-sections" />
@@ -148,7 +148,6 @@
 					<Add option="-fno-threadsafe-statics" />
 					<Add option="-Wno-unknown-pragmas" />
 					<Add option="-D__STDC_FORMAT_MACROS=1" />
-					<Add option="-DWAF_BUILD=0" />
 					<Add option="-D_GNU_SOURCE=1" />
 					<Add option="-DCONFIG_HAL_BOARD_SUBTYPE=HAL_BOARD_SUBTYPE_NONE" />
 					<Add option="-DCONFIG_SHAL_CORE=SHAL_CORE_CYGWIN" />
@@ -156,25 +155,21 @@
 					<Add option="-DHAVE_TYPE_TRAITS_H=1" />
 					<Add option="-DHAVE_CMATH_H=1" />
 					<Add option="-DHAVE_STD_NULLPTR_T=1" />
-					<Add option="-DHAVE_CMATH_ISNAN=1" />
 					<Add option="-DHAL_OS_POSIX_IO=1" />
 					<Add option="-DHAVE_STD_MOVE=1" />
 					<Add option="-DHAVE_STD_REMOVE_REFERENCE=1" />
-					<Add option="-DHAVE_CMATH_ISFINITE=1" />
-					<Add option="-DHAVE_CMATH_ISINF=1" />
-					<Add option="-DNEED_CMATH_ISFINITE_STD_NAMESPACE=1" />
-					<Add option="-DNEED_CMATH_ISINF_STD_NAMESPACE=1" />
-					<Add option="-DNEED_CMATH_ISNAN_STD_NAMESPACE=1" />
 					<Add option="-DHAVE_ENDIAN_H=1" />
 					<Add option="-DHAVE_BYTESWAP_H=1" />
 					<Add directory="../../../../libraries" />
 					<Add directory="../../../../libraries/AP_Common/missing" />
 				</Compiler>
 				<Linker>
+					<Add option="-O3" />
 					<Add option="-s" />
 					<Add option="-static-libstdc++" />
 					<Add option="-static-libgcc" />
 					<Add library="MasterApmLibs" />
+					<Add library="pthread" />
 					<Add directory="../../../../build/uruscygwin/lib/Release" />
 				</Linker>
 				<ExtraCommands>
@@ -183,13 +178,14 @@
 				</ExtraCommands>
 			</Target>
 			<Target title="URUSCYGWIN_Debug">
-				<Option output="../../../../build/uruscygwin/Debug/HelloUrusConsole" prefix_auto="1" extension_auto="1" />
+				<Option output="../../../../build/uruscygwin/examples/Debug/HelloUrusConsole" prefix_auto="1" extension_auto="1" />
 				<Option object_output="../../../../build/uruscygwin/obj/Debug" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Option use_console_runner="0" />
 				<Compiler>
 					<Add option="-Wall" />
+					<Add option="-Og" />
 					<Add option="-g" />
 					<Add option="-std=gnu++11" />
 					<Add option="-ffunction-sections" />
@@ -216,15 +212,9 @@
 					<Add option="-DHAVE_TYPE_TRAITS_H=1" />
 					<Add option="-DHAVE_CMATH_H=1" />
 					<Add option="-DHAVE_STD_NULLPTR_T=1" />
-					<Add option="-DHAVE_CMATH_ISNAN=1" />
 					<Add option="-DHAL_OS_POSIX_IO=1" />
 					<Add option="-DHAVE_STD_MOVE=1" />
 					<Add option="-DHAVE_STD_REMOVE_REFERENCE=1" />
-					<Add option="-DHAVE_CMATH_ISFINITE=1" />
-					<Add option="-DHAVE_CMATH_ISINF=1" />
-					<Add option="-DNEED_CMATH_ISFINITE_STD_NAMESPACE=1" />
-					<Add option="-DNEED_CMATH_ISINF_STD_NAMESPACE=1" />
-					<Add option="-DNEED_CMATH_ISNAN_STD_NAMESPACE=1" />
 					<Add option="-DHAVE_ENDIAN_H=1" />
 					<Add option="-DHAVE_BYTESWAP_H=1" />
 					<Add directory="../../../../libraries" />
@@ -234,6 +224,7 @@
 					<Add option="-static-libstdc++" />
 					<Add option="-static-libgcc" />
 					<Add library="MasterApmLibs" />
+					<Add library="pthread" />
 					<Add directory="../../../../build/uruscygwin/lib/Debug" />
 				</Linker>
 				<ExtraCommands>
