@@ -62,7 +62,7 @@
 					<Add directory="../../../../build/apm2/lib/Release" />
 				</Linker>
 				<ExtraCommands>
-					<Add after="avr-size --mcu=atmega2560 --format=avr $(TARGET_OUTPUT_FILE)" />
+					<Add after="avr-size $(TARGET_OUTPUT_FILE)" />
 					<Add after="avr-objcopy -R .eeprom -R .fuse -R .lock -R .signature -O ihex $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).hex" />
 					<Add after="avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).eep" />
 					<Mode after="always" />
@@ -192,13 +192,13 @@
 				</ExtraCommands>
 			</Target>
 			<Target title="URUSCYGWIN_Release">
-				<Option output="../../../../build/uruscygwin/Release/joypadA" prefix_auto="1" extension_auto="1" />
+				<Option output="../../../../build/uruscygwin/examples/Release/joypadA" prefix_auto="1" extension_auto="1" />
 				<Option object_output="../../../../build/uruscygwin/obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Option use_console_runner="0" />
 				<Compiler>
-					<Add option="-O2" />
+					<Add option="-O3" />
 					<Add option="-Wall" />
 					<Add option="-std=gnu++11" />
 					<Add option="-ffunction-sections" />
@@ -217,7 +217,6 @@
 					<Add option="-fno-threadsafe-statics" />
 					<Add option="-Wno-unknown-pragmas" />
 					<Add option="-D__STDC_FORMAT_MACROS=1" />
-					<Add option="-DWAF_BUILD=0" />
 					<Add option="-D_GNU_SOURCE=1" />
 					<Add option="-DCONFIG_HAL_BOARD_SUBTYPE=HAL_BOARD_SUBTYPE_NONE" />
 					<Add option="-DCONFIG_SHAL_CORE=SHAL_CORE_CYGWIN" />
@@ -225,15 +224,9 @@
 					<Add option="-DHAVE_TYPE_TRAITS_H=1" />
 					<Add option="-DHAVE_CMATH_H=1" />
 					<Add option="-DHAVE_STD_NULLPTR_T=1" />
-					<Add option="-DHAVE_CMATH_ISNAN=1" />
 					<Add option="-DHAL_OS_POSIX_IO=1" />
 					<Add option="-DHAVE_STD_MOVE=1" />
 					<Add option="-DHAVE_STD_REMOVE_REFERENCE=1" />
-					<Add option="-DHAVE_CMATH_ISFINITE=1" />
-					<Add option="-DHAVE_CMATH_ISINF=1" />
-					<Add option="-DNEED_CMATH_ISFINITE_STD_NAMESPACE=1" />
-					<Add option="-DNEED_CMATH_ISINF_STD_NAMESPACE=1" />
-					<Add option="-DNEED_CMATH_ISNAN_STD_NAMESPACE=1" />
 					<Add option="-DHAVE_ENDIAN_H=1" />
 					<Add option="-DHAVE_BYTESWAP_H=1" />
 					<Add directory="../../../../libraries" />
@@ -241,7 +234,10 @@
 					<Add directory="../../../../build/uruscygwin/libraries/GCS_MAVLink" />
 				</Compiler>
 				<Linker>
+					<Add option="-O3" />
 					<Add option="-s" />
+					<Add option="-static-libstdc++" />
+					<Add option="-static-libgcc" />
 					<Add library="MasterApmLibs" />
 					<Add library="pthread" />
 					<Add directory="../../../../build/uruscygwin/lib/Release" />
@@ -259,6 +255,7 @@
 				<Option use_console_runner="0" />
 				<Compiler>
 					<Add option="-Wall" />
+					<Add option="-Og" />
 					<Add option="-g" />
 					<Add option="-std=gnu++11" />
 					<Add option="-ffunction-sections" />
@@ -277,7 +274,6 @@
 					<Add option="-fno-threadsafe-statics" />
 					<Add option="-Wno-unknown-pragmas" />
 					<Add option="-D__STDC_FORMAT_MACROS=1" />
-					<Add option="-DWAF_BUILD=0" />
 					<Add option="-D_GNU_SOURCE=1" />
 					<Add option="-DCONFIG_HAL_BOARD_SUBTYPE=HAL_BOARD_SUBTYPE_NONE" />
 					<Add option="-DCONFIG_SHAL_CORE=SHAL_CORE_CYGWIN" />
@@ -285,15 +281,9 @@
 					<Add option="-DHAVE_TYPE_TRAITS_H=1" />
 					<Add option="-DHAVE_CMATH_H=1" />
 					<Add option="-DHAVE_STD_NULLPTR_T=1" />
-					<Add option="-DHAVE_CMATH_ISNAN=1" />
 					<Add option="-DHAL_OS_POSIX_IO=1" />
 					<Add option="-DHAVE_STD_MOVE=1" />
 					<Add option="-DHAVE_STD_REMOVE_REFERENCE=1" />
-					<Add option="-DHAVE_CMATH_ISFINITE=1" />
-					<Add option="-DHAVE_CMATH_ISINF=1" />
-					<Add option="-DNEED_CMATH_ISFINITE_STD_NAMESPACE=1" />
-					<Add option="-DNEED_CMATH_ISINF_STD_NAMESPACE=1" />
-					<Add option="-DNEED_CMATH_ISNAN_STD_NAMESPACE=1" />
 					<Add option="-DHAVE_ENDIAN_H=1" />
 					<Add option="-DHAVE_BYTESWAP_H=1" />
 					<Add directory="../../../../libraries" />
@@ -304,6 +294,7 @@
 					<Add option="-static-libstdc++" />
 					<Add option="-static-libgcc" />
 					<Add library="MasterApmLibs" />
+					<Add library="pthread" />
 					<Add directory="../../../../build/uruscygwin/lib/Debug" />
 				</Linker>
 				<ExtraCommands>
@@ -317,7 +308,6 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
-			<Add option="-DF_CPU=16000000UL" />
 		</Compiler>
 		<Unit filename="joypadA.cpp" />
 		<Extensions>
