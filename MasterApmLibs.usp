@@ -37,7 +37,6 @@
 					<Add option="-Wno-unknown-pragmas" />
 					<Add option="-Wno-overflow" />
 					<Add option="-D__STDC_FORMAT_MACROS=1" />
-					<Add option="-DWAF_BUILD=0" />
 					<Add option="-D_GNU_SOURCE=1" />
 					<Add option="-DF_CPU=16000000L" />
 					<Add option="-DSHAL_CORE_APM2=1" />
@@ -47,7 +46,6 @@
 					<Add option="-DHAVE_TYPE_TRAITS_H=0" />
 					<Add option="-DHAVE_CMATH_H=0" />
 					<Add option="-DHAVE_STD_NULLPTR_T=0" />
-					<Add option="-DHAVE_CMATH_ISNAN=1" />
 					<Add option="-DHAL_OS_POSIX_IO=0" />
 					<Add option="-DHAVE_STD_MOVE=0" />
 					<Add option="-DHAVE_STD_REMOVE_REFERENCE=0" />
@@ -96,7 +94,6 @@
 					<Add option="-Wno-unknown-pragmas" />
 					<Add option="-Wno-overflow" />
 					<Add option="-D__STDC_FORMAT_MACROS=1" />
-					<Add option="-DWAF_BUILD=0" />
 					<Add option="-D_GNU_SOURCE=1" />
 					<Add option="-DF_CPU=16000000L" />
 					<Add option="-DSHAL_CORE_APM328=1" />
@@ -106,7 +103,6 @@
 					<Add option="-DHAVE_TYPE_TRAITS_H=0" />
 					<Add option="-DHAVE_CMATH_H=0" />
 					<Add option="-DHAVE_STD_NULLPTR_T=0" />
-					<Add option="-DHAVE_CMATH_ISNAN=1" />
 					<Add option="-DHAL_OS_POSIX_IO=0" />
 					<Add option="-DHAVE_STD_MOVE=0" />
 					<Add option="-DHAVE_STD_REMOVE_REFERENCE=0" />
@@ -154,7 +150,6 @@
 					<Add option="-Wno-unknown-pragmas" />
 					<Add option="-Wno-overflow" />
 					<Add option="-D__STDC_FORMAT_MACROS=1" />
-					<Add option="-DWAF_BUILD=0" />
 					<Add option="-D_GNU_SOURCE=1" />
 					<Add option="-DF_CPU=16000000L" />
 					<Add option="-DSHAL_CORE_APM16U=1" />
@@ -164,7 +159,6 @@
 					<Add option="-DHAVE_TYPE_TRAITS_H=0" />
 					<Add option="-DHAVE_CMATH_H=0" />
 					<Add option="-DHAVE_STD_NULLPTR_T=0" />
-					<Add option="-DHAVE_CMATH_ISNAN=1" />
 					<Add option="-DHAL_OS_POSIX_IO=0" />
 					<Add option="-DHAVE_STD_MOVE=0" />
 					<Add option="-DHAVE_STD_REMOVE_REFERENCE=0" />
@@ -209,7 +203,6 @@
 					<Add option="-Wno-unknown-pragmas" />
 					<Add option="-Wno-overflow" />
 					<Add option="-D__STDC_FORMAT_MACROS=1" />
-					<Add option="-DWAF_BUILD=0" />
 					<Add option="-D_GNU_SOURCE=1" />
 					<Add option="-DF_CPU=16000000L" />
 					<Add option="-DSHAL_CORE_MEGA02=1" />
@@ -219,7 +212,6 @@
 					<Add option="-DHAVE_TYPE_TRAITS_H=0" />
 					<Add option="-DHAVE_CMATH_H=0" />
 					<Add option="-DHAVE_STD_NULLPTR_T=0" />
-					<Add option="-DHAVE_CMATH_ISNAN=1" />
 					<Add option="-DHAL_OS_POSIX_IO=0" />
 					<Add option="-DHAVE_STD_MOVE=0" />
 					<Add option="-DHAVE_STD_REMOVE_REFERENCE=0" />
@@ -247,7 +239,7 @@
 				<Option compiler="gcc" />
 				<Option createDefFile="1" />
 				<Compiler>
-					<Add option="-O2" />
+					<Add option="-O3" />
 					<Add option="-Wall" />
 					<Add option="-std=gnu++11" />
 					<Add option="-ffunction-sections" />
@@ -264,7 +256,6 @@
 					<Add option="-Wno-sign-compare" />
 					<Add option="-Wno-missing-field-initializers" />
 					<Add option="-Wno-trigraphs" />
-					<Add option="-DWAF_BUILD=1" />
 					<Add option="-D__STDC_FORMAT_MACROS=1" />
 					<Add option="-D_GNU_SOURCE=1" />
 					<Add option="-DSHAL_CORE_CYGWIN=1" />
@@ -274,13 +265,9 @@
 					<Add option="-DHAVE_TYPE_TRAITS_H=1" />
 					<Add option="-DHAVE_CMATH_H=1" />
 					<Add option="-DHAVE_STD_NULLPTR_T=1" />
-					<Add option="-DHAVE_CMATH_ISNAN=1" />
 					<Add option="-DHAL_OS_POSIX_IO=1" />
 					<Add option="-DHAVE_STD_MOVE=1" />
 					<Add option="-DHAVE_STD_REMOVE_REFERENCE=1" />
-					<Add option="-DHAVE_CMATH_ISFINITE=1" />
-					<Add option="-DHAVE_CMATH_ISINF=1" />
-					<Add option="-DNEED_CMATH_ISFINITE_STD_NAMESPACE=1" />
 					<Add option="-DHAVE_ENDIAN_H=1" />
 					<Add option="-DHAVE_BYTESWAP_H=1" />
 					<Add directory="libraries" />
@@ -289,6 +276,7 @@
 					<Add directory="build/uruscygwin/libraries/GCS_MAVLink" />
 				</Compiler>
 				<Linker>
+					<Add option="-O3" />
 					<Add option="-s" />
 					<Add library="pthread" />
 				</Linker>
@@ -306,6 +294,7 @@
 				<Option createDefFile="1" />
 				<Compiler>
 					<Add option="-Wall" />
+					<Add option="-Og" />
 					<Add option="-g" />
 					<Add option="-std=gnu++11" />
 					<Add option="-ffunction-sections" />
@@ -322,7 +311,6 @@
 					<Add option="-Wno-sign-compare" />
 					<Add option="-Wno-missing-field-initializers" />
 					<Add option="-Wno-trigraphs" />
-					<Add option="-DWAF_BUILD=1" />
 					<Add option="-D__STDC_FORMAT_MACROS=1" />
 					<Add option="-D_GNU_SOURCE=1" />
 					<Add option="-DSHAL_CORE_CYGWIN=1" />
@@ -332,13 +320,9 @@
 					<Add option="-DHAVE_TYPE_TRAITS_H=1" />
 					<Add option="-DHAVE_CMATH_H=1" />
 					<Add option="-DHAVE_STD_NULLPTR_T=1" />
-					<Add option="-DHAVE_CMATH_ISNAN=1" />
 					<Add option="-DHAL_OS_POSIX_IO=1" />
 					<Add option="-DHAVE_STD_MOVE=1" />
 					<Add option="-DHAVE_STD_REMOVE_REFERENCE=1" />
-					<Add option="-DHAVE_CMATH_ISFINITE=1" />
-					<Add option="-DHAVE_CMATH_ISINF=1" />
-					<Add option="-DNEED_CMATH_ISFINITE_STD_NAMESPACE=1" />
 					<Add option="-DHAVE_ENDIAN_H=1" />
 					<Add option="-DHAVE_BYTESWAP_H=1" />
 					<Add directory="libraries" />
@@ -378,7 +362,6 @@
 					<Add option="-Wno-sign-compare" />
 					<Add option="-Wno-missing-field-initializers" />
 					<Add option="-Wno-trigraphs" />
-					<Add option="-DWAF_BUILD=1" />
 					<Add option="-D__STDC_FORMAT_MACROS=1" />
 					<Add option="-D_GNU_SOURCE=1" />
 					<Add option="-DSHAL_CORE_CYGWIN=1" />
@@ -388,17 +371,11 @@
 					<Add option="-DHAVE_TYPE_TRAITS_H=1" />
 					<Add option="-DHAVE_CMATH_H=1" />
 					<Add option="-DHAVE_STD_NULLPTR_T=1" />
-					<Add option="-DHAVE_CMATH_ISNAN=1" />
 					<Add option="-DHAL_OS_POSIX_IO=1" />
 					<Add option="-DHAVE_STD_MOVE=1" />
 					<Add option="-DHAVE_STD_REMOVE_REFERENCE=1" />
-					<Add option="-DHAVE_CMATH_ISFINITE=1" />
-					<Add option="-DHAVE_CMATH_ISINF=1" />
-					<Add option="-DNEED_CMATH_ISFINITE_STD_NAMESPACE=1" />
 					<Add option="-DHAVE_ENDIAN_H=1" />
 					<Add option="-DHAVE_BYTESWAP_H=1" />
-					<Add option="-DNEED_CMATH_ISNAN_STD_NAMESPACE=1" />
-					<Add option="-DNEED_CMATH_ISINF_STD_NAMESPACE=1" />
 					<Add directory="libraries" />
 					<Add directory="libraries/AP_Common/missing" />
 					<Add directory="build/uruscygwin/libraries/" />
@@ -441,7 +418,6 @@
 					<Add option="-Wno-sign-compare" />
 					<Add option="-Wno-missing-field-initializers" />
 					<Add option="-Wno-trigraphs" />
-					<Add option="-DWAF_BUILD=1" />
 					<Add option="-D__STDC_FORMAT_MACROS=1" />
 					<Add option="-D_GNU_SOURCE=1" />
 					<Add option="-DSHAL_CORE_CYGWIN=1" />
@@ -451,13 +427,9 @@
 					<Add option="-DHAVE_TYPE_TRAITS_H=1" />
 					<Add option="-DHAVE_CMATH_H=1" />
 					<Add option="-DHAVE_STD_NULLPTR_T=1" />
-					<Add option="-DHAVE_CMATH_ISNAN=1" />
 					<Add option="-DHAL_OS_POSIX_IO=1" />
 					<Add option="-DHAVE_STD_MOVE=1" />
 					<Add option="-DHAVE_STD_REMOVE_REFERENCE=1" />
-					<Add option="-DHAVE_CMATH_ISFINITE=1" />
-					<Add option="-DHAVE_CMATH_ISINF=1" />
-					<Add option="-DNEED_CMATH_ISFINITE_STD_NAMESPACE=1" />
 					<Add option="-DHAVE_ENDIAN_H=1" />
 					<Add option="-DHAVE_BYTESWAP_H=1" />
 					<Add directory="libraries" />
@@ -581,10 +553,12 @@
 		<Unit filename="libraries/AP_Baro/AP_Baro_HIL.cpp">
 			<Option target="URUSCYGWIN_Release" />
 			<Option target="URUSCYGWIN_WX30_Release" />
+			<Option target="URUSCYGWIN_Debug" />
 		</Unit>
 		<Unit filename="libraries/AP_Baro/AP_Baro_MS5611.cpp">
 			<Option target="URUSCYGWIN_Release" />
 			<Option target="URUSCYGWIN_WX30_Release" />
+			<Option target="URUSCYGWIN_Debug" />
 		</Unit>
 		<Unit filename="libraries/AP_Baro/AP_Baro_URUS.cpp">
 			<Option target="URUSCYGWIN_Release" />
@@ -759,6 +733,9 @@
 			<Option target="URUSCYGWIN_Debug" />
 			<Option target="URUSCYGWIN_WX30_Release" />
 			<Option target="URUSCYGWIN_WX30_Debug" />
+		</Unit>
+		<Unit filename="libraries/AP_Common/missing/cmath">
+			<Option target="URUSCYGWIN_Release" />
 		</Unit>
 		<Unit filename="libraries/AP_Compass/AP_Compass.cpp">
 			<Option target="URUSCYGWIN_Release" />
@@ -2894,21 +2871,25 @@
 			<Option target="APM2_Release" />
 			<Option target="APM16U_Release" />
 			<Option target="MEGA02_Release" />
+			<Option target="APM328_Release" />
 		</Unit>
 		<Unit filename="modules/urus_modules/masterlibs/libraries/AP_Joypad/AP_Joypad.h">
 			<Option target="APM2_Release" />
 			<Option target="APM16U_Release" />
 			<Option target="MEGA02_Release" />
+			<Option target="APM328_Release" />
 		</Unit>
 		<Unit filename="modules/urus_modules/masterlibs/libraries/AP_Joypad/AP_Joypad_Backend.cpp">
 			<Option target="APM2_Release" />
 			<Option target="APM16U_Release" />
 			<Option target="MEGA02_Release" />
+			<Option target="APM328_Release" />
 		</Unit>
 		<Unit filename="modules/urus_modules/masterlibs/libraries/AP_Joypad/AP_Joypad_Backend.h">
 			<Option target="APM2_Release" />
 			<Option target="APM16U_Release" />
 			<Option target="MEGA02_Release" />
+			<Option target="APM328_Release" />
 		</Unit>
 		<Unit filename="modules/urus_modules/masterlibs/libraries/AP_Joypad/AP_Joypad_USB.cpp">
 			<Option target="APM16U_Release" />
@@ -2942,6 +2923,7 @@
 		<Unit filename="modules/urus_modules/masterlibs/libraries/AP_Math/matrix3.cpp">
 			<Option target="APM2_Release" />
 			<Option target="MEGA02_Release" />
+			<Option target="APM328_Release" />
 		</Unit>
 		<Unit filename="modules/urus_modules/masterlibs/libraries/AP_Math/matrixN.cpp">
 			<Option target="APM2_Release" />
@@ -2962,10 +2944,12 @@
 		<Unit filename="modules/urus_modules/masterlibs/libraries/AP_Math/vector2.cpp">
 			<Option target="APM2_Release" />
 			<Option target="MEGA02_Release" />
+			<Option target="APM328_Release" />
 		</Unit>
 		<Unit filename="modules/urus_modules/masterlibs/libraries/AP_Math/vector3.cpp">
 			<Option target="APM2_Release" />
 			<Option target="MEGA02_Release" />
+			<Option target="APM328_Release" />
 		</Unit>
 		<Unit filename="modules/urus_modules/masterlibs/libraries/AP_Notify/AP_BoardLED.cpp">
 			<Option target="APM2_Release" />
@@ -3020,10 +3004,12 @@
 		<Unit filename="modules/urus_modules/masterlibs/libraries/Filter/LowPassFilter.cpp">
 			<Option target="APM2_Release" />
 			<Option target="MEGA02_Release" />
+			<Option target="APM328_Release" />
 		</Unit>
 		<Unit filename="modules/urus_modules/masterlibs/libraries/Filter/LowPassFilter2p.cpp">
 			<Option target="APM2_Release" />
 			<Option target="MEGA02_Release" />
+			<Option target="APM328_Release" />
 		</Unit>
 		<Unit filename="modules/urus_modules/masterlibs/libraries/RC_Channel/RC_Channel.cpp">
 			<Option target="APM2_Release" />
