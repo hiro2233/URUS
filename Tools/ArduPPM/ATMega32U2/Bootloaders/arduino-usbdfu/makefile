@@ -48,9 +48,9 @@
 
 
 # MCU name
-#MCU = atmega8u2
+MCU = atmega8u2
 #MCU = atmega16u2
-MCU = atmega32u2
+#MCU = atmega32u2
 
 MCU_AVRDUDE = $(MCU)
 
@@ -65,8 +65,8 @@ ARDUINO_MODEL_PID = 0x0010
 # Target board (see library "Board Types" documentation, NONE for projects not requiring
 # LUFA board drivers). If USER is selected, put custom board drivers in a directory called 
 # "Board" inside the application directory.
-#BOARD  = USER
-BOARD  = NONE
+BOARD  = USER
+#BOARD  = NONE
 
 
 # Processor frequency.
@@ -102,10 +102,10 @@ F_CLOCK = $(F_CPU)
 #
 # Note that the bootloader size and start address given in AVRStudio is in words and not
 # bytes, and so will need to be doubled to obtain the byte address needed by AVR-GCC.
-#BOOT_START =  0x1000
+BOOT_START =  0x1000
 
 # ATMega32u2 boot start
-BOOT_START =  0x7000
+#BOOT_START =  0x7000
 
 # Output format. (can be srec, ihex, binary)
 FORMAT = ihex
@@ -226,7 +226,7 @@ CPPDEFS += $(LUFA_OPTS)
 #  -Wall...:     warning level
 #  -Wa,...:      tell GCC to pass this to the assembler.
 #    -adhlns...: create assembler listing
-CFLAGS = -g$(DEBUG)
+#CFLAGS = -g$(DEBUG)
 CFLAGS += $(CDEFS)
 CFLAGS += -O$(OPT)
 CFLAGS += -funsigned-char
@@ -255,7 +255,7 @@ CFLAGS += $(CSTANDARD)
 #  -Wall...:     warning level
 #  -Wa,...:      tell GCC to pass this to the assembler.
 #    -adhlns...: create assembler listing
-CPPFLAGS = -g$(DEBUG)
+#CPPFLAGS = -g$(DEBUG)
 CPPFLAGS += $(CPPDEFS)
 CPPFLAGS += -O$(OPT)
 CPPFLAGS += -funsigned-char
