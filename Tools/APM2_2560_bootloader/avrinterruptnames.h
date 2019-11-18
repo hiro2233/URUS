@@ -607,7 +607,7 @@ PGM_P gInterruptNameTable[]	PROGMEM =
 	gAvrInt_USART1_UDRE,	//	27
 	gAvrInt_USART1_TX,		//	28
 	gAvrInt_ANALOG_COMP,	//	29
-	
+
 	gAvrInt_ADC,			//	30
 	gAvrInt_EE_READY,		//	31
 
@@ -669,7 +669,7 @@ PGM_P gInterruptNameTable[]	PROGMEM =
 	gAvrInt_USART1_UDRE,	//	27
 	gAvrInt_USART1_TX,		//	28
 	gAvrInt_ANALOG_COMP,	//	29
-	
+
 	gAvrInt_ADC,			//	30
 	gAvrInt_EE_READY,		//	31
 
