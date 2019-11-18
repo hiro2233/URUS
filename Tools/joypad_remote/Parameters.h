@@ -55,7 +55,9 @@ public:
         k_param_rc_5,
         k_param_rc_6,
         k_param_rc_7,
-
+        k_param_rc_8,
+        k_param_rc_9,
+        k_param_rc_10,
         //
         // 220: Waypoint data
         //
@@ -74,6 +76,9 @@ public:
     RC_Channel rc_5;
     RC_Channel rc_6;
     RC_Channel rc_7;
+    RC_Channel rc_8;
+    RC_Channel rc_9;
+    RC_Channel rc_10;
 
     AP_Int8 command_total; // 1 if HOME is set
 

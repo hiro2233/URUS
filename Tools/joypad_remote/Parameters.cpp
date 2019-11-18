@@ -40,10 +40,18 @@ const AP_Param::Info JoypadRemote::var_info[] PROGMEM = {
     // @Group: RC6_
     // @Path: ../libraries/RC_Channel/RC_Channel.cpp,../libraries/RC_Channel/RC_Channel_aux.cpp
     GGROUP(rc_6,    "RC6_", RC_Channel),
-    // @Group: RC6_
+    // @Group: RC7_
     // @Path: ../libraries/RC_Channel/RC_Channel.cpp,../libraries/RC_Channel/RC_Channel_aux.cpp
     GGROUP(rc_7,    "RC7_", RC_Channel),
-
+    // @Group: RC8_
+    // @Path: ../libraries/RC_Channel/RC_Channel.cpp,../libraries/RC_Channel/RC_Channel_aux.cpp
+    GGROUP(rc_8,    "RC8_", RC_Channel),
+    // @Group: RC9_
+    // @Path: ../libraries/RC_Channel/RC_Channel.cpp,../libraries/RC_Channel/RC_Channel_aux.cpp
+    GGROUP(rc_9,    "RC9_", RC_Channel),
+    // @Group: RC10_
+    // @Path: ../libraries/RC_Channel/RC_Channel.cpp,../libraries/RC_Channel/RC_Channel_aux.cpp
+    GGROUP(rc_10,    "RC10_", RC_Channel),
     // @Param: CMD_TOTAL
     // @DisplayName: Number of loaded mission items
     // @Description: Set to 1 if HOME location has been loaded by the ground station. Do not change this manually.

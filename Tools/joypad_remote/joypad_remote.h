@@ -19,28 +19,33 @@
 #define CFG_BCH_EXTRA   4
 #define CFG_ELIPANEL    5
 
-#define CONFIG_JOYPAD CFG_ELIPANEL
+#define CONFIG_JOYPAD CFG_B737
 
 #if CONFIG_JOYPAD == CFG_B737
 #define CONTROLLER_DATA_CNT 2
-#define SENSORS_COUNT 9
+#define SENSORS_COUNT 10
 #define DISABLED_SWITCHING 1
+#define CONFIG_SENSOR_CAL DISABLED
 #elif CONFIG_JOYPAD == CFG_BCH
 #define CONTROLLER_DATA_CNT 1
 #define SENSORS_COUNT 7
+#define CONFIG_SENSOR_CAL DISABLED
 #elif CONFIG_JOYPAD == CFG_ELIPANEL
 #define CONTROLLER_DATA_CNT 1
 #define SENSORS_COUNT 7
 #define DISABLED_SWITCHING 1
+#define CONFIG_SENSOR_CAL ENABLED
 #elif CONFIG_JOYPAD == CFG_ELIPEDAL
 #define CONTROLLER_DATA_CNT 1
 #define DISABLED_SWITCHING 1
 #define ENABLED_EXT_MUX 1
 #define SENSORS_COUNT 7
+#define CONFIG_SENSOR_CAL DISABLED
 #elif CONFIG_JOYPAD == CFG_BCH_EXTRA
 #define CONTROLLER_DATA_CNT 1
 #define SENSORS_COUNT 7
 #define DISABLED_SWITCHING 1
+#define CONFIG_SENSOR_CAL DISABLED
 //#define ENABLED_EXT_MUX 1
 #endif
 
@@ -70,6 +75,7 @@ private:
         ST_Y1
     };
 
+#pragma pack(push, 1)
     typedef struct __data_controller
     {
         uint8_t button_array[BUTTON_ARRAY_LENGTH];
@@ -87,6 +93,7 @@ private:
         int16_t stick3_y;
 
     } data_controller_t;
+#pragma pack(pop)
 
     Parameters g;
     AP_Param param_loader{var_info};

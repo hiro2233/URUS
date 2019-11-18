@@ -32,6 +32,8 @@ AnalogSensor::AnalogSensor(state_t *_state):
     state(*_state)
 {
     source = hal.analogin->channel(_state->pin);
+    source->set_stop_pin(_state->pin);
+
     if (source == nullptr) {
         // failed to allocate a ADC channel? This shouldn't happen
         return;
@@ -88,5 +90,6 @@ void AnalogSensor::update(void)
         dist_m = 0;
     }
 
-    state.distance_cm = dist_m * 250.0f;
+    state.distance_cm = (uint16_t)round((dist_m * 1023) / 5);
+
 }
