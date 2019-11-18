@@ -48,8 +48,8 @@
 
 
 # MCU name
-MCU = atmega8u2
-#MCU = atmega16u2
+#MCU = atmega8u2
+MCU = atmega16u2
 #MCU = atmega32u2
 
 MCU_AVRDUDE = $(MCU)
@@ -102,7 +102,12 @@ F_CLOCK = $(F_CPU)
 #
 # Note that the bootloader size and start address given in AVRStudio is in words and not
 # bytes, and so will need to be doubled to obtain the byte address needed by AVR-GCC.
-BOOT_START =  0x1000
+
+# ATMega8u2 boot start
+#BOOT_START =  0x1000
+
+# ATMega16u2 boot start
+BOOT_START =  0x3000
 
 # ATMega32u2 boot start
 #BOOT_START =  0x7000
