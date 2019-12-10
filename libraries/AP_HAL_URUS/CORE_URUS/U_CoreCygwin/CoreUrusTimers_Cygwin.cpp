@@ -22,11 +22,13 @@ static struct {
     struct timeval start_time;
 } state_tv;
 
+static timespec ts_init;
+
 CLCoreUrusTimers_Cygwin::CLCoreUrusTimers_Cygwin() :
     NSCORE_URUS::CLCoreUrusTimers()
 {
     gettimeofday(&state_tv.start_time, nullptr);
-    nowt = _scheduler->get_isr_timer_tick() * _scheduler->get_timer_dial();
+    clock_gettime(CLOCK_REALTIME, &ts_init);
 
 #if 0
     _measure_time_proccess();
@@ -42,14 +44,14 @@ void CLCoreUrusTimers_Cygwin::_micro_sleep(uint32_t usec)
     while (nanosleep(&ts, &ts) == -1 && errno == EINTR);
 }
 
-uint64_t CLCoreUrusTimers_Cygwin::_micros64ts ()
+uint64_t CLCoreUrusTimers_Cygwin::_micros64ts()
 {
     struct timespec ts;
     clock_gettime(CLOCK_REALTIME, &ts);
-    return ts.tv_sec*1000000 + ts.tv_nsec/1000;
+    return (ts.tv_sec * 1000000 + ts.tv_nsec / 1000) - (ts_init.tv_sec * 1000000 + ts_init.tv_nsec / 1000);
 }
 
-uint64_t CLCoreUrusTimers_Cygwin::_micros64tv ()
+uint64_t CLCoreUrusTimers_Cygwin::_micros64tv()
 {
     struct timeval tp;
     gettimeofday(&tp, nullptr);
@@ -93,9 +95,9 @@ void CLCoreUrusTimers_Cygwin::_measure_time_proccess()
     printf("clkpersec: %lu\n", (unsigned long)clk);
 }
 
-uint64_t CLCoreUrusTimers_Cygwin::get_core_hrdtime ()
+uint64_t CLCoreUrusTimers_Cygwin::get_core_hrdtime()
 {
-    return (_scheduler->get_isr_timer_tick() * _scheduler->get_timer_dial()) - nowt;
+    return _micros64ts();
 }
 
 uint32_t CLCoreUrusTimers_Cygwin::get_core_micros32()
@@ -110,7 +112,7 @@ uint64_t CLCoreUrusTimers_Cygwin::get_core_micros64()
 
 uint32_t CLCoreUrusTimers_Cygwin::get_core_millis32()
 {
-    return get_core_hrdtime() / 1000;
+    return round((float)get_core_hrdtime() / 1000.0f);
 }
 
 uint64_t CLCoreUrusTimers_Cygwin::get_core_millis64()

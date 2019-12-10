@@ -14,6 +14,7 @@
 #include <pthread.h>
 #include <time.h>
 #include <errno.h>
+#include <unistd.h>
 
 extern const AP_HAL::HAL& hal;
 static const NSCORE_URUS::CLCORE_URUS& _urus_core = NSCORE_URUS::get_CORE();
@@ -85,7 +86,7 @@ void *CLCoreUrusScheduler_Cygwin::_fire_isr_timer(void *arg)
 #ifndef __unix__
         usleep_win(clk_core_timers.isr_time);
 #else
-        usleep_nix(clk_core_timers.isr_time);
+        usleep(clk_core_timers.isr_time);
 #endif // __unix__
         //hal.scheduler->delay_microseconds(clk_core_timers.isr_time);
         fire_isr_timer();
@@ -113,7 +114,7 @@ void *CLCoreUrusScheduler_Cygwin::_fire_isr_sched(void *arg)
 #ifndef __unix__
         usleep_win((clk_core_timers.isr_time / CORE_SPEED_FREQ_PERCENT));
 #else
-        usleep_nix((clk_core_timers.isr_time / CORE_SPEED_FREQ_PERCENT));
+        usleep(clk_core_timers.isr_time * CORE_SPEED_FREQ_PERCENT);
 #endif // __unix__
         fire_isr_sched();
 
@@ -159,8 +160,7 @@ void CLCoreUrusScheduler_Cygwin::init()
 
 void CLCoreUrusScheduler_Cygwin::delay_microseconds(uint16_t usec)
 {
-    uint32_t start_micros = AP_HAL::micros();
-    while ((AP_HAL::micros() - start_micros) < usec);
+    usleep(usec);
 }
 
 void CLCoreUrusScheduler_Cygwin::delay(uint16_t ms)
